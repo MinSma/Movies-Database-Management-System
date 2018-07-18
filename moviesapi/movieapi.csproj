@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="DataContracts\Responses\" />
+    <Folder Include="DataContracts\Requests\" />
+    <Folder Include="Data\Entities\" />
+    <Folder Include="Services\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
