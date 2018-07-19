@@ -16,13 +16,15 @@ class MainPage extends React.Component {
         var headers = [ 
             'Title',
             'ReleaseDate',
+            'Genre',
             'Actions'
         ];
 
         var data = this.props.movies.map((movie) => {
             return [ 
                 movie.title, 
-                dateFormat(movie.releaseDate, "yyyy/mm/dd") 
+                dateFormat(movie.releaseDate, "yyyy/mm/dd"),
+                movie.genreName
             ];
         });
 
