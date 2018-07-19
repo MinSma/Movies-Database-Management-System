@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 
 /moviesapi/wwwroot/dist
+moviesapi/package-lock.json
