@@ -1,19 +1,20 @@
-import React from "react";
-import NavigationBar from "./NavigationBar";
+import React from 'react';
+import NavigationBar from './NavigationBar';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../actions';
 
-class MainPage extends React.Component {
+class ActorsPage extends React.Component {
     componentDidMount() {
-        this.props.getAllMovies();
+        this.props.getAllActors();
     }
 
-    render () {
+    render() {
         return (
             <div>
                 <NavigationBar />
+                <div>Actors Page</div>
             </div>
         );
     }
@@ -25,8 +26,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (store) => {
     return {
-        movies: store.movies
+        actors: store.actors
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ActorsPage);
