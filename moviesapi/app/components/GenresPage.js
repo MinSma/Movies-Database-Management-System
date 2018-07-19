@@ -1,6 +1,7 @@
 import React from 'react';
 import NavigationBar from './NavigationBar';
 import TableComponent from "./TableComponent";
+import AddButton from './AddButton';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -26,6 +27,7 @@ class GenresPage extends React.Component {
         return (
             <div>
                 <NavigationBar />
+                <AddButton text={"Genre"} />
                 <TableComponent headers={headers} data={data} />
             </div>
         );

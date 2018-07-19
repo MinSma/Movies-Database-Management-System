@@ -2,6 +2,7 @@ import React from "react";
 import dateFormat from 'dateformat';
 import NavigationBar from "./NavigationBar";
 import TableComponent from "./TableComponent";
+import AddButton from './AddButton';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -31,6 +32,7 @@ class MainPage extends React.Component {
         return (
             <div>
                 <NavigationBar />
+                <AddButton text={"Movie"} />
                 <TableComponent headers={headers} data={data} />
             </div>
         );
