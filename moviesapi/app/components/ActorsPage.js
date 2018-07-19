@@ -1,5 +1,6 @@
 import React from 'react';
 import NavigationBar from './NavigationBar';
+import TableComponent from "./TableComponent";
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -11,6 +12,26 @@ class ActorsPage extends React.Component {
     }
 
     render() {
+        var headers = [ 
+            'First Name',
+            'Last Name',
+            'Actions'
+        ];
+
+        var data = this.props.actors.map((actor) => {
+            return [ 
+                actor.firstName, 
+                actor.lastName 
+            ];
+        });
+
+        return (
+            <div>
+                <NavigationBar />
+                <TableComponent headers={headers} data={data} />
+            </div>
+        );
+
         return (
             <div>
                 <NavigationBar />

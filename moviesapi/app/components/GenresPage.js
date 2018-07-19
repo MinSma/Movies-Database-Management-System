@@ -13,17 +13,20 @@ class GenresPage extends React.Component {
 
     render() {
         var headers = [ 
-            'Name'
+            'Name',
+            'Actions'
         ];
 
-        var names = this.props.genres.map((genre) => {
-            return [ genre.name ];
+        var data = this.props.genres.map((genre) => {
+            return [ 
+                genre.name 
+            ];
         });
 
         return (
             <div>
                 <NavigationBar />
-                <TableComponent headers={headers} data={names} />
+                <TableComponent headers={headers} data={data} />
             </div>
         );
     }
