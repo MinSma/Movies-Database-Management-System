@@ -61,9 +61,9 @@ namespace movieapi.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var updatedActor = await _genresService.Update(id, request);
+                var updatedGenre = await _genresService.Update(id, request);
 
-                return new ObjectResult(updatedActor);
+                return new ObjectResult(updatedGenre);
             }
             catch (InvalidOperationException)
             {
