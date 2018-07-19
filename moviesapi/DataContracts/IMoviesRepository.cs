@@ -3,7 +3,7 @@ using movieapi.DataContracts.Requests;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace movieapi.DataContracts.Responses
+namespace movieapi.DataContracts
 {
     public interface IMoviesRepository
     {
