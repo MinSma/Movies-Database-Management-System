@@ -26,6 +26,7 @@ namespace reactdotnet
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IActorsRepository, ActorsRepository>();
+            services.AddScoped<IGenresRepository, GenresRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
