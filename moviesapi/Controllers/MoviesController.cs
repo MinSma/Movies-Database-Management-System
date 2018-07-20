@@ -2,6 +2,7 @@
 using movieapi.Data.Entities;
 using movieapi.DataContracts;
 using movieapi.DataContracts.Requests;
+using movieapi.DataContracts.Responses;
 using movieapi.Services;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace movieapi.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Movie>> GetAll()
+        public async Task<List<MovieResponse>> GetAll()
         {
             return await _moviesService.GetAll();
         }

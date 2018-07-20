@@ -1,5 +1,6 @@
 ﻿using movieapi.Data.Entities;
 using movieapi.DataContracts.Requests;
+using movieapi.DataContracts.Responses;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,10 +8,10 @@ namespace movieapi.DataContracts
 {
     public interface IMoviesService
     {
-        Task<List<Movie>> GetAll();
-        Task<Movie> GetById(int id);
-        Task<Movie> Create(MovieCreateUpdateRequest request);
-        Task<Movie> Update(int id, MovieCreateUpdateRequest request);
+        Task<List<MovieResponse>> GetAll();
+        Task<MovieResponse> GetById(int id);
+        Task<MovieResponse> Create(MovieCreateUpdateRequest request);
+        Task<MovieResponse> Update(int id, MovieCreateUpdateRequest request);
         Task Delete(int id);
     }
 }

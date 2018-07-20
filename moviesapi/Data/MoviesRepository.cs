@@ -2,7 +2,9 @@
 using movieapi.Data.Entities;
 using movieapi.DataContracts;
 using movieapi.DataContracts.Requests;
+using movieapi.DataContracts.Responses;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace movieapi.Data
@@ -16,21 +18,34 @@ namespace movieapi.Data
             _dbContext = dBContext;
         }
 
-        public async Task<List<Movie>> GetAll()
+        public async Task<List<MovieResponse>> GetAll()
         {
             return await _dbContext
                 .Movies
+                .Select(x => new MovieResponse
+                {
+                    Title = x.Title,
+                    ReleaseDate = x.ReleaseDate,
+                    GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name
+                })
                 .ToListAsync();
         }
 
-        public async Task<Movie> GetById(int id)
+        public async Task<MovieResponse> GetById(int id)
         {
-            return await _dbContext
+            var movie = await _dbContext
                 .Movies
                 .SingleOrDefaultAsync(x => x.Id == id);
+
+            return new MovieResponse
+            {
+                Title = movie.Title,
+                ReleaseDate = movie.ReleaseDate,
+                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
+            };
         }
 
-        public async Task<Movie> Create(MovieCreateUpdateRequest request)
+        public async Task<MovieResponse> Create(MovieCreateUpdateRequest request)
         {
             var movie = new Movie
             {
@@ -46,10 +61,15 @@ namespace movieapi.Data
             await _dbContext
                 .SaveChangesAsync();
 
-            return movie;
+            return new MovieResponse
+            {
+                Title = movie.Title,
+                ReleaseDate = movie.ReleaseDate,
+                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
+            };
         }
 
-        public async Task<Movie> Update(int id, MovieCreateUpdateRequest request)
+        public async Task<MovieResponse> Update(int id, MovieCreateUpdateRequest request)
         {
             var movie = await _dbContext
                 .Movies
@@ -62,7 +82,12 @@ namespace movieapi.Data
             await _dbContext
                 .SaveChangesAsync();
 
-            return movie;
+            return new MovieResponse
+            {
+                Title = movie.Title,
+                ReleaseDate = movie.ReleaseDate,
+                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
+            };
         }
 
         public async Task Delete(int id)

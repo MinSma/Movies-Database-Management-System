@@ -1,0 +1,32 @@
+.exit-button {
+    float: right;
+    margin-top: 0;
+}
+
+.form-content {
+    text-align: center;
+}
+
+.form-content p {
+    font-weight: bold;
+    margin: 1%;
+}
+
+.form-title {
+    font-weight: bold;
+}
+
+.error-message {
+    margin: 1px;
+    color: red;
+}
+
+.required-field::before {
+    content: "*";
+    color: red;
+}
+
+.dateInputs {
+    display: inline-block;
+    width: 30%;
+}
