@@ -19,6 +19,7 @@ class GenresPage extends React.Component {
 
         this.handleButtonOnClick = this.handleButtonOnClick.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
+        this.handleDialogSubmit = this.handleDialogSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -38,7 +39,7 @@ class GenresPage extends React.Component {
     }
 
     handleDialogSubmit(values) {
-        this.props.addGenre(values.name);
+        this.props.addGenre(values);
     }
 
     render() {

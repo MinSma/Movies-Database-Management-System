@@ -6,10 +6,39 @@ import AddButton from './AddButton';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../actions';
+import ActorDialogForm from './ActorDialogForm/ActorDialogForm';
 
 class ActorsPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            dialogIsOpen: false
+        }
+
+        this.handleButtonOnClick = this.handleButtonOnClick.bind(this);
+        this.handleDialogClose = this.handleDialogClose.bind(this);
+        this.handleDialogSubmit = this.handleDialogSubmit.bind(this);
+    }
+    
     componentDidMount() {
         this.props.getAllActors();
+    }
+
+    handleDialogClose() {
+        this.setState({
+            dialogIsOpen: false
+        });
+    }
+
+    handleButtonOnClick() {
+        this.setState({
+            dialogIsOpen: true
+        });
+    }
+
+    handleDialogSubmit(values) {
+        this.props.addActor(values);
     }
 
     render() {
@@ -29,8 +58,14 @@ class ActorsPage extends React.Component {
         return (
             <div>
                 <NavigationBar />
-                <AddButton text={"Actor"} />
+                <AddButton action={this.handleButtonOnClick} text={"Actor"} />
                 <TableComponent headers={headers} data={data} />
+
+                {this.state.dialogIsOpen && <ActorDialogForm onSubmit={this.handleDialogSubmit}
+                                                             formTitle={"ADD NEW ACTOR"} 
+                                                             buttonText={"ADD"}
+                                                             handleClose={this.handleDialogClose} />
+                }
             </div>
         );
 
