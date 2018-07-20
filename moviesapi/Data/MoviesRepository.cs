@@ -24,6 +24,7 @@ namespace movieapi.Data
                 .Movies
                 .Select(x => new MovieResponse
                 {
+                    Id = x.Id,
                     Title = x.Title,
                     ReleaseDate = x.ReleaseDate,
                     GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name
@@ -39,6 +40,7 @@ namespace movieapi.Data
 
             return new MovieResponse
             {
+                Id = movie.Id,
                 Title = movie.Title,
                 ReleaseDate = movie.ReleaseDate,
                 GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
@@ -84,6 +86,7 @@ namespace movieapi.Data
 
             return new MovieResponse
             {
+                Id = movie.Id,
                 Title = movie.Title,
                 ReleaseDate = movie.ReleaseDate,
                 GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
