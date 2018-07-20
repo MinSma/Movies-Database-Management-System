@@ -27,7 +27,7 @@ namespace movieapi.Data
                     Id = x.Id,
                     Title = x.Title,
                     ReleaseDate = x.ReleaseDate,
-                    GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name
+                    Genre = _dbContext.Genres.First(g => g.Id == x.GenreId)
                 })
                 .ToListAsync();
         }
@@ -43,7 +43,7 @@ namespace movieapi.Data
                 Id = movie.Id,
                 Title = movie.Title,
                 ReleaseDate = movie.ReleaseDate,
-                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
+                Genre = _dbContext.Genres.First(g => g.Id == movie.GenreId)
             };
         }
 
@@ -67,7 +67,7 @@ namespace movieapi.Data
             {
                 Title = movie.Title,
                 ReleaseDate = movie.ReleaseDate,
-                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
+                Genre = _dbContext.Genres.First(g => g.Id == movie.GenreId)
             };
         }
 
@@ -89,7 +89,7 @@ namespace movieapi.Data
                 Id = movie.Id,
                 Title = movie.Title,
                 ReleaseDate = movie.ReleaseDate,
-                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
+                Genre = _dbContext.Genres.First(g => g.Id == movie.GenreId)
             };
         }
 
