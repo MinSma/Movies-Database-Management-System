@@ -3,6 +3,7 @@ const ADD_GENRE = 'ADD_GENRE';
 const GET_ALL_ACTORS = 'GET_ALL_ACTORS';
 const ADD_ACTOR = 'ADD_ACTOR';
 const GET_ALL_MOVIES = 'GET_ALL_MOVIES';
+const ADD_MOVIE = 'ADD_MOVIE';
 
 var headers = {
     "Content-Type": "application/json",
@@ -92,3 +93,20 @@ export const getAllMovies = () => (dispatch) => {
             });
     }).catch((error) => console.log(error));
 };
+
+export const addMovie = (values) => (dispatch) => {
+    fetch(`${url}/api/movies`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(values),
+        credentials: 'include'
+    }).then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: ADD_MOVIE,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.log(error));
+}
