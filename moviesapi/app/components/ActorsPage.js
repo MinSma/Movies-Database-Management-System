@@ -2,6 +2,7 @@ import React from 'react';
 import NavigationBar from './NavigationBar';
 import TableComponent from "./TableComponent";
 import AddButton from './AddButton';
+import { Button } from '@material-ui/core';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -13,32 +14,63 @@ class ActorsPage extends React.Component {
         super(props);
 
         this.state = {
-            dialogIsOpen: false
+            addDialogIsOpen: false,
+            editDialogIsOpen: false,
+            editingActor: ''
         }
 
-        this.handleButtonOnClick = this.handleButtonOnClick.bind(this);
-        this.handleDialogClose = this.handleDialogClose.bind(this);
+        this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
+        this.handleAddDialogClose = this.handleAddDialogClose.bind(this);
+        this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
+        this.handleEditDialogClose = this.handleEditDialogClose.bind(this);
         this.handleDialogSubmit = this.handleDialogSubmit.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
     }
     
     componentDidMount() {
         this.props.getAllActors();
     }
 
-    handleDialogClose() {
+    handleAddDialogClose() {
         this.setState({
-            dialogIsOpen: false
+            addDialogIsOpen: false
         });
     }
 
-    handleButtonOnClick() {
+    handleEditDialogClose() {
         this.setState({
-            dialogIsOpen: true
+            editDialogIsOpen: false
         });
     }
+
+    handleAddButtonClick() {
+        this.setState({
+            addDialogIsOpen: true
+        });
+    }
+
+    handleEditButtonClick(actor) {
+        this.setState({
+            editDialogIsOpen: true,
+            editingActor: actor
+        })
+    };
 
     handleDialogSubmit(values) {
-        this.props.addActor(values);
+        if(values.id === undefined) { 
+            this.props.addActor(values);
+        } else {
+            let actor = this.state.editingActor;
+            
+            actor.firstName = values.firstName;
+            actor.lastName = values.lastName;
+
+            this.props.editActor(actor);
+        }
+    }
+
+    handleRemove(id) {
+        this.props.removeActor(id);
     }
 
     render() {
@@ -51,20 +83,31 @@ class ActorsPage extends React.Component {
         var data = this.props.actors.map((actor) => {
             return [ 
                 actor.firstName, 
-                actor.lastName 
+                actor.lastName,
+                <div>
+                    <Button onClick={this.handleEditButtonClick.bind(this, actor)} variant="raised" color="primary">Edit</Button>
+                    <Button onClick={this.handleRemove.bind(this, actor.id)} variant="raised" color="primary">Remove</Button>
+                </div>
             ];
         });
 
         return (
             <div>
                 <NavigationBar />
-                <AddButton action={this.handleButtonOnClick} text={"Actor"} />
+                <AddButton action={this.handleAddButtonClick} text={"Actor"} />
                 <TableComponent headers={headers} data={data} />
 
-                {this.state.dialogIsOpen && <ActorDialogForm onSubmit={this.handleDialogSubmit}
+                {this.state.addDialogIsOpen && <ActorDialogForm onSubmit={this.handleDialogSubmit}
                                                              formTitle={"ADD NEW ACTOR"} 
                                                              buttonText={"ADD"}
-                                                             handleClose={this.handleDialogClose} />
+                                                             handleClose={this.handleAddDialogClose} />
+                }
+
+                {this.state.editDialogIsOpen && <ActorDialogForm initialValues={this.state.editingActor}
+                                                                 onSubmit={this.handleDialogSubmit}
+                                                                 formTitle={"EDIT ACTOR"}
+                                                                 buttonText={"EDIT"}
+                                                                 handleClose={this.handleEditDialogClose} />
                 }
             </div>
         );

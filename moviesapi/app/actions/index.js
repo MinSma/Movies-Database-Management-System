@@ -4,6 +4,8 @@ const EDIT_GENRE = 'EDIT_GENRE';
 const REMOVE_GENRE = 'REMOVE_GENRE';
 const GET_ALL_ACTORS = 'GET_ALL_ACTORS';
 const ADD_ACTOR = 'ADD_ACTOR';
+const EDIT_ACTOR = 'EDIT_ACTOR';
+const REMOVE_ACTOR = 'REMOVE_ACTOR';
 const GET_ALL_MOVIES = 'GET_ALL_MOVIES';
 const ADD_MOVIE = 'ADD_MOVIE';
 
@@ -111,6 +113,38 @@ export const addActor = (values) => (dispatch) => {
             });
     }).catch((error) => console.log(error));
 };
+
+export const editActor = (actor) => (dispatch) => {
+    fetch(`${url}/api/actors/${actor.id}`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(actor),
+        credentials: 'include'
+    }).then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: EDIT_ACTOR,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.log(error));
+}
+
+export const removeActor = (id) => (dispatch) => {
+    fetch(`${url}/api/actors/${id}`, {
+        method: 'DELETE',
+        headers,
+        credentials: 'include'
+    }).then(response => {
+        if(response.status === 200 || response.status === 204) {
+            dispatch({
+                type: REMOVE_ACTOR,
+                id: id
+            });
+        };
+    }).catch((error) => console.log(error));
+}
 
 export const getAllMovies = () => (dispatch) => {
     fetch(`${url}/api/movies`, {

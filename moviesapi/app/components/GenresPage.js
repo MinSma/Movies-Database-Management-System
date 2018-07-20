@@ -101,6 +101,7 @@ class GenresPage extends React.Component {
 
                 {this.state.editDialogIsOpen && <GenreDialogForm initialValues={this.state.editingGenre}
                                                                  onSubmit={this.handleDialogSubmit}
+                                                                 formTitle={"EDIT GENRE"}
                                                                  buttonText={"EDIT"}
                                                                  handleClose={this.handleEditDialogClose} />
                 }
