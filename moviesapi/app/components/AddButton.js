@@ -3,7 +3,10 @@ import { Button } from '@material-ui/core';
 
 export default class AddButton extends React.Component {
     render() {
-        return <Button style={this.addButtonStyles}>Add {this.props.text}</Button>
+        return <Button onClick={this.props.action} 
+                style={this.addButtonStyles}>
+                       Add {this.props.text}
+                </Button>
     }
     
     addButtonStyles = {
