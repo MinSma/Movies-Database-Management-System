@@ -39,7 +39,8 @@ class ActorsPage extends React.Component {
 
     handleEditDialogClose() {
         this.setState({
-            editDialogIsOpen: false
+            editDialogIsOpen: false,
+            editingActor: ''
         });
     }
 
