@@ -8,6 +8,8 @@ const EDIT_ACTOR = 'EDIT_ACTOR';
 const REMOVE_ACTOR = 'REMOVE_ACTOR';
 const GET_ALL_MOVIES = 'GET_ALL_MOVIES';
 const ADD_MOVIE = 'ADD_MOVIE';
+const EDIT_MOVIE = 'EDIT_MOVIE';
+const REMOVE_MOVIE = 'REMOVE_MOVIE';
 
 var headers = {
     "Content-Type": "application/json",
@@ -176,5 +178,37 @@ export const addMovie = (values) => (dispatch) => {
                     payload: data
                 });
             });
+    }).catch((error) => console.log(error));
+}
+
+export const editMovie = (movie) => (dispatch) => {
+    fetch(`${url}/api/movies/${movie.id}`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(movie),
+        credentials: 'include'
+    }).then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: EDIT_MOVIE,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.log(error));
+}
+
+export const removeMovie = (id) => (dispatch) => {
+    fetch(`${url}/api/movies/${id}`, {
+        method: 'DELETE',
+        headers,
+        credentials: 'include'
+    }).then(response => {
+        if(response.status === 200 || response.status === 204) {
+            dispatch({
+                type: REMOVE_MOVIE,
+                id: id
+            });
+        };
     }).catch((error) => console.log(error));
 }
