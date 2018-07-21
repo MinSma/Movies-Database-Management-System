@@ -9,8 +9,8 @@ export default (state = [], action) => {
             ];
         case 'EDIT_GENRE':
             return state.map(item => {
-                if(item.id === action.id) {
-                    item.name = action.values.name;
+                if(item.id === action.payload.id) {
+                    item.name = action.payload.name;
                 };
 
                 return item;
