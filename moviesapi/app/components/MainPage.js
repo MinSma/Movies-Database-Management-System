@@ -110,7 +110,7 @@ class MainPage extends React.Component {
 
         return (
             <div>
-                <NavigationBar />
+                <NavigationBar handleSearch={this.props.getAllMovies} />
                 <AddButton action={this.handleAddButtonClick} text={"Movie"} />
                 <TableComponent headers={headers} data={data} />
 

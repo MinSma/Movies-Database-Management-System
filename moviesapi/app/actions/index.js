@@ -148,8 +148,8 @@ export const removeActor = (id) => (dispatch) => {
     }).catch((error) => console.log(error));
 }
 
-export const getAllMovies = () => (dispatch) => {
-    fetch(`${url}/api/movies`, {
+export const getAllMovies = (text) => (dispatch) => {
+    fetch(`${url}/api/movies?text=${text ? text : ''}`, {
         method: 'GET',
         headers,
         credentials: 'include'
