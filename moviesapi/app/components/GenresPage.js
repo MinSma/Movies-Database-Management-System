@@ -81,8 +81,12 @@ class GenresPage extends React.Component {
             return [ 
                 genre.name,
                 <div>
-                    <Button onClick={this.handleEditButtonClick.bind(this, genre)} variant="raised" color="primary">Edit</Button>
-                    <Button onClick={this.handleRemove.bind(this, genre.id)} variant="raised" color="primary">Remove</Button>
+                    <span className="tableButtons">
+                        <Button onClick={this.handleEditButtonClick.bind(this, genre)} variant="raised" color="primary">Edit</Button>
+                    </span>
+                    <span className="tableButtons">
+                        <Button onClick={this.handleRemove.bind(this, genre.id)} variant="raised" color="primary">Remove</Button>
+                    </span>
                 </div>
             ];
         });

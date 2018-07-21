@@ -102,8 +102,12 @@ class MainPage extends React.Component {
                 dateFormat(movie.releaseDate, "yyyy-mm-dd"),
                 movie.genreName,
                 <div>
-                    <Button onClick={this.handleEditButtonClick.bind(this, movie)} variant="raised" color="primary">Edit</Button>
-                    <Button onClick={this.handleRemove.bind(this, movie.id)} variant="raised" color="primary">Remove</Button>
+                    <span className="tableButtons">
+                        <Button onClick={this.handleEditButtonClick.bind(this, movie)} variant="raised" color="primary">Edit</Button>
+                    </span>
+                    <span className="tableButtons">
+                        <Button onClick={this.handleRemove.bind(this, movie.id)} variant="raised" color="primary">Remove</Button>
+                    </span>
                 </div>
             ];
         });
