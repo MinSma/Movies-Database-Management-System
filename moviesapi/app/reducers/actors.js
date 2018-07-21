@@ -7,6 +7,17 @@ export default (state = [], action) => {
                 ...state,
                 action.payload
             ];
+        case 'EDIT_ACTOR':
+            return state.map(item => {
+                if(item.id === action.payload.id) {
+                    item.firstName = action.payload.firstName;
+                    item.lastName = action.payload.lastName;
+                };
+
+                return item;
+            });
+        case 'REMOVE_ACTOR':
+            return state.filter((item) => item.id !== action.id);
         default:
             return state;
     }

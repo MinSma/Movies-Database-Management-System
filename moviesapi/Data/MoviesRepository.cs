@@ -24,8 +24,10 @@ namespace movieapi.Data
                 .Movies
                 .Select(x => new MovieResponse
                 {
+                    Id = x.Id,
                     Title = x.Title,
                     ReleaseDate = x.ReleaseDate,
+                    GenreId = _dbContext.Genres.First(g => g.Id == x.GenreId).Id,
                     GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name
                 })
                 .ToListAsync();
@@ -39,8 +41,10 @@ namespace movieapi.Data
 
             return new MovieResponse
             {
+                Id = movie.Id,
                 Title = movie.Title,
                 ReleaseDate = movie.ReleaseDate,
+                GenreId = _dbContext.Genres.First(g => g.Id == movie.GenreId).Id,
                 GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
             };
         }
@@ -61,11 +65,17 @@ namespace movieapi.Data
             await _dbContext
                 .SaveChangesAsync();
 
+            var genre = await _dbContext
+                .Genres
+                .SingleOrDefaultAsync(x => x.Id == request.GenreId);
+
             return new MovieResponse
             {
-                Title = movie.Title,
-                ReleaseDate = movie.ReleaseDate,
-                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
+                Id = _dbContext.Movies.Last().Id,
+                Title = request.Title,
+                ReleaseDate = request.ReleaseDate,
+                GenreId = genre.Id,
+                GenreName = genre.Name
             };
         }
 
@@ -84,8 +94,10 @@ namespace movieapi.Data
 
             return new MovieResponse
             {
+                Id = movie.Id,
                 Title = movie.Title,
                 ReleaseDate = movie.ReleaseDate,
+                GenreId = _dbContext.Genres.First(g => g.Id == movie.GenreId).Id,
                 GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
             };
         }

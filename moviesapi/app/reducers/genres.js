@@ -7,6 +7,16 @@ export default (state = [], action) => {
                 ...state, 
                 action.payload
             ];
+        case 'EDIT_GENRE':
+            return state.map(item => {
+                if(item.id === action.payload.id) {
+                    item.name = action.payload.name;
+                };
+
+                return item;
+            });
+        case 'REMOVE_GENRE':
+            return state.filter((item) => item.id !== action.id);
         default:
             return state;
     }

@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import MainPage from './components/MainPage';
 import ActorsPage from './components/ActorsPage';
 import GenresPage from './components/GenresPage';
+import './components/styles.css';
 
 const App = () => (
     <Provider store={store}>

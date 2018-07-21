@@ -3,7 +3,7 @@ import NavigationBar from './NavigationBar';
 import TableComponent from "./TableComponent";
 import AddButton from './AddButton';
 import GenreDialogForm from './GenreDialogForm/GenreDialogForm';
-import './styles.css';
+import { Button } from '@material-ui/core';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -14,32 +14,61 @@ class GenresPage extends React.Component {
         super(props);
 
         this.state = {
-            dialogIsOpen: false
+            addDialogIsOpen: false,
+            editDialogIsOpen: false,
+            editingGenre: ''
         }
 
-        this.handleButtonOnClick = this.handleButtonOnClick.bind(this);
-        this.handleDialogClose = this.handleDialogClose.bind(this);
+        this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
+        this.handleAddDialogClose = this.handleAddDialogClose.bind(this);
+        this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
+        this.handleEditDialogClose = this.handleEditDialogClose.bind(this);
         this.handleDialogSubmit = this.handleDialogSubmit.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
     }
 
     componentDidMount() {
         this.props.getAllGenres();
     }
 
-    handleDialogClose() {
+    handleAddDialogClose() {
         this.setState({
-            dialogIsOpen: false
+            addDialogIsOpen: false
         });
     }
 
-    handleButtonOnClick() {
+    handleEditDialogClose() {
         this.setState({
-            dialogIsOpen: true
+            editDialogIsOpen: false,
+            editingGenre: ''
+        });
+    }
+
+    handleAddButtonClick() {
+        this.setState({
+            addDialogIsOpen: true
+        });
+    }
+
+    handleEditButtonClick(genre) {
+        this.setState({
+            editDialogIsOpen: true,
+            editingGenre: genre
         });
     }
 
     handleDialogSubmit(values) {
-        this.props.addGenre(values);
+        if(values.id === undefined) {
+            this.props.addGenre(values);
+        } else {
+            let genre = this.state.editingGenre;
+            genre.name = values.name;
+            this.props.editGenre(genre);
+        }
+    }
+
+    handleRemove(id) {
+        this.props.removeGenre(id);
     }
 
     render() {
@@ -50,20 +79,31 @@ class GenresPage extends React.Component {
 
         var data = this.props.genres.map((genre) => {
             return [ 
-                genre.name 
+                genre.name,
+                <div>
+                    <Button onClick={this.handleEditButtonClick.bind(this, genre)} variant="raised" color="primary">Edit</Button>
+                    <Button onClick={this.handleRemove.bind(this, genre.id)} variant="raised" color="primary">Remove</Button>
+                </div>
             ];
         });
 
         return (
             <div>
                 <NavigationBar />
-                <AddButton action={this.handleButtonOnClick} text={"Genre"} />
+                <AddButton action={this.handleAddButtonClick} text={"Genre"} />
                 <TableComponent headers={headers} data={data} />
 
-                {this.state.dialogIsOpen && <GenreDialogForm onSubmit={this.handleDialogSubmit}
-                                                             formTitle={"ADD NEW GENRE"} 
-                                                             buttonText={"ADD"}
-                                                             handleClose={this.handleDialogClose} />
+                {this.state.addDialogIsOpen && <GenreDialogForm onSubmit={this.handleDialogSubmit}
+                                                                formTitle={"ADD NEW GENRE"} 
+                                                                buttonText={"ADD"}
+                                                                handleClose={this.handleAddDialogClose} />
+                }
+
+                {this.state.editDialogIsOpen && <GenreDialogForm initialValues={this.state.editingGenre}
+                                                                 onSubmit={this.handleDialogSubmit}
+                                                                 formTitle={"EDIT GENRE"}
+                                                                 buttonText={"EDIT"}
+                                                                 handleClose={this.handleEditDialogClose} />
                 }
             </div>
         );

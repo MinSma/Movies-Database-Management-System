@@ -27,14 +27,18 @@ class MovieDialogForm extends React.Component {
             initialValues.year = dateFormat(this.props.initialValues.releaseDate, "yyyy");
             initialValues.month = dateFormat(this.props.initialValues.releaseDate, "mm");
             initialValues.day = dateFormat(this.props.initialValues.releaseDate, "dd");
-            
-            this.setState({
-                genreId: this.props.initialValues.genreId
-            });
         }
 
         this.handleClose = this.handleClose.bind(this);
         this.submitValidation = submitValidation.bind(this);
+    }
+
+    componentDidMount() {
+        if(Object.keys(this.props.initialValues).length !== 0){
+            this.setState({
+                genreId: this.props.initialValues.genreId
+            });
+        }
     }
 
     handleClose() {

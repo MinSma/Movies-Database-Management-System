@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using movieapi.Data.Entities;
 using movieapi.DataContracts;
 using movieapi.DataContracts.Requests;
 using movieapi.DataContracts.Responses;
