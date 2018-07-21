@@ -13,6 +13,7 @@ export default (state = [], action) => {
                     item.title = action.payload.title;
                     item.releaseDate = action.payload.releaseDate;
                     item.genreId = action.payload.genreId;
+                    item.genreName = action.payload.genreName;
                 };
 
                 return item;
