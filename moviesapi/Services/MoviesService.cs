@@ -16,9 +16,9 @@ namespace movieapi.Services
             _moviesRepository = moviesRepository;
         }
 
-        public async Task<List<MovieResponse>> GetAll()
+        public async Task<List<MovieResponse>> GetAll(string text)
         {
-            return await _moviesRepository.GetAll();
+            return await _moviesRepository.GetAll(text);
         }
 
         public async Task<MovieResponse> GetById(int id)

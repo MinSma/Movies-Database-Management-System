@@ -20,12 +20,12 @@ namespace movieapi.Controllers
         }
 
         [HttpGet]
-        public async Task<List<MovieResponse>> GetAll()
+        public async Task<List<MovieResponse>> GetAll([FromQuery] string text)
         {
-            return await _moviesService.GetAll();
+            return await _moviesService.GetAll(text);
         }
 
-        [HttpGet("{id}", Name = "GetMovie")]
+        [HttpGet("{id:int}", Name = "GetMovie")]
         public async Task<IActionResult> GetById(int id)
         {
             var movie = await _moviesService.GetById(id);

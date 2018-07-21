@@ -18,8 +18,27 @@ namespace movieapi.Data
             _dbContext = dBContext;
         }
 
-        public async Task<List<MovieResponse>> GetAll()
+        public async Task<List<MovieResponse>> GetAll(string text)
         {
+            if(text != null)
+            {
+                return await _dbContext
+                .Movies
+                .Where(x => x.Title.ToLower().Contains(text.ToLower()) ||
+                            x.Genre.Name.ToLower().Contains(text.ToLower()) ||
+                            x.ReleaseDate.Date.ToString().Contains(text.ToLower())
+                 )
+                .Select(x => new MovieResponse
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    ReleaseDate = x.ReleaseDate,
+                    GenreId = _dbContext.Genres.First(g => g.Id == x.GenreId).Id,
+                    GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name
+                })
+                .ToListAsync();
+            }
+
             return await _dbContext
                 .Movies
                 .Select(x => new MovieResponse

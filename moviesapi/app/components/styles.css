@@ -30,3 +30,7 @@
     display: inline-block;
     width: 30%;
 }
+
+.searchBox {
+    margin-left: 100%;
+}
