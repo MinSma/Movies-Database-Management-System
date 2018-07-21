@@ -86,8 +86,12 @@ class ActorsPage extends React.Component {
                 actor.firstName, 
                 actor.lastName,
                 <div>
-                    <Button onClick={this.handleEditButtonClick.bind(this, actor)} variant="raised" color="primary">Edit</Button>
-                    <Button onClick={this.handleRemove.bind(this, actor.id)} variant="raised" color="primary">Remove</Button>
+                    <span className="tableButtons">
+                        <Button onClick={this.handleEditButtonClick.bind(this, actor)} variant="raised" color="primary">Edit</Button>
+                    </span>
+                    <span className="tableButtons">
+                        <Button onClick={this.handleRemove.bind(this, actor.id)} variant="raised" color="primary">Remove</Button>
+                    </span>
                 </div>
             ];
         });
