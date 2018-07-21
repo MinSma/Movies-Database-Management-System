@@ -31,13 +31,15 @@ export default class NavigationBar extends React.Component {
                         <Link to="/actors" style={linkStyles}>Actors</Link>
                         <Link to="/genres" style={linkStyles}>Genres</Link>
                         
-                        <TextField
-                            className={'searchBox'}
-                            placeholder="Search"
-                            value={this.searchText}
-                            onChange={this.handleChange}
-                            style={{backgroundColor: '#fff', padding: 2, marginLeft: '60%'}}
-                        />
+                        {this.props.handleSearch ?
+                            <TextField
+                                className={'searchBox'}
+                                placeholder="Search"
+                                value={this.searchText}
+                                onChange={this.handleChange}
+                                style={{backgroundColor: '#fff', padding: 2, marginLeft: '60%'}}
+                            /> : ''
+                        }
                     </Toolbar>
                 </AppBar>;
     }
