@@ -25,7 +25,7 @@ namespace movieapi.Controllers
             return await _moviesService.GetAll(text);
         }
 
-        [HttpGet("{id:int}", Name = "GetMovie")]
+        [HttpGet("{id}", Name = "GetMovie")]
         public async Task<IActionResult> GetById(int id)
         {
             var movie = await _moviesService.GetById(id);
