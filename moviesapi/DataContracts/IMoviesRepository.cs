@@ -8,7 +8,7 @@ namespace movieapi.DataContracts
 {
     public interface IMoviesRepository
     {
-        Task<List<MovieResponse>> GetAll();
+        Task<List<MovieResponse>> GetAll(string text);
         Task<MovieResponse> GetById(int id);
         Task<MovieResponse> Create(MovieCreateUpdateRequest request);
         Task<MovieResponse> Update(int id, MovieCreateUpdateRequest request);
