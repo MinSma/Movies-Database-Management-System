@@ -1,5 +1,4 @@
-﻿using movieapi.Data.Entities;
-using System;
+﻿using System;
 
 namespace movieapi.DataContracts.Responses
 {
@@ -11,6 +10,8 @@ namespace movieapi.DataContracts.Responses
 
         public DateTime ReleaseDate { get; set; }
 
-        public Genre Genre { get; set; }
+        public int GenreId { get; set; }
+
+        public string GenreName { get; set; }
     }
 }
