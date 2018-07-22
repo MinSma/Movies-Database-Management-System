@@ -1,5 +1,25 @@
 import { SubmissionError } from 'redux-form';
 
+export function typeValidation(values) {
+    let errors = {};
+    
+    let numberRegex = /^[0-9]*$/;
+
+    if(values['year'] !== undefined && !values['year'].match(numberRegex)) {
+        errors.year = "Wrong year format";
+    }
+
+    if(values['month'] !== undefined && !values['month'].match(numberRegex)) {
+        errors.month = "Wrong month format";
+    }
+
+    if(values['day'] !== undefined && !values['day'].match(numberRegex)) {
+        errors.day = "Wrong day format";
+    }
+
+    return errors;
+}
+
 export function submitValidation(values) {
     if(!values['title']) {
         throw new SubmissionError({ 
@@ -34,12 +54,12 @@ export function submitValidation(values) {
 
     if(values['month'] && values['month'].match(monthRegex) === null) {
         throw new SubmissionError({ 
-            year: "Wrong month type value.", 
+            month: "Wrong month type value.", 
             _error: "Wrong month type value." });
     } else {
         if(values['month'] > 12 || values['month'] < 1) {
             throw new SubmissionError({ 
-                year: "Wrong month type value.", 
+                month: "Wrong month type value.", 
                 _error: "Wrong month type value." });
         }
     }
@@ -55,12 +75,12 @@ export function submitValidation(values) {
 
     if(values['day'] && values['day'].match(dayRegex) === null) {
         throw new SubmissionError({ 
-            year: "Wrong day type value.", 
+            day: "Wrong day type value.", 
             _error: "Wrong day type value." });
     } else {
         if(values['day'] > 31 || values['day'] < 1) {
             throw new SubmissionError({ 
-                year: "Wrong day type value.", 
+                day: "Wrong day type value.", 
                 _error: "Wrong day type value." });
         }
     }

@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, IconButton, Select } from '@materia
 import { Close as CloseIcon } from '@material-ui/icons';
 import { Button, Input } from '@material-ui/core';
 import { Field, reduxForm } from 'redux-form';
-import { submitValidation } from './validation';
+import { submitValidation, typeValidation } from './validation';
 import dateFormat from 'dateformat';
 
 let initialValues = {};
@@ -71,7 +71,6 @@ class MovieDialogForm extends React.Component {
                     </DialogTitle>
                     <DialogContent>
                         <div className="form-content">
-                            <div className="error-message">{this.props.error && <strong>{this.props.error}</strong>}</div>
                             <p className="required-field">Title:</p>
                             <Field
                                 name="title"
@@ -164,6 +163,7 @@ class MovieDialogForm extends React.Component {
         delete props.input.value;
         return(
             <div>
+                {props.meta.touched && props.meta.error && <span className="error-message">{props.meta.error}</span>}
                 <Input
                     style={props.style}
                     className={props.className}
@@ -172,7 +172,6 @@ class MovieDialogForm extends React.Component {
                     error={props.meta.invalid}
                     defaultValue={props.inputText}
                 />
-                {props.touched && props.error && <span>{props.error}</span>}
             </div>
         );
     }
@@ -225,5 +224,6 @@ class MovieDialogForm extends React.Component {
 
 export default reduxForm({ 
     form: 'GenreDialogForm',
-    initialValues: initialValues
+    initialValues: initialValues,
+    validate: typeValidation
 })(MovieDialogForm);
