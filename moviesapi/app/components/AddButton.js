@@ -1,11 +1,14 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 export default class AddButton extends React.Component {
     render() {
-        return <Button onClick={this.props.action} 
+        const { action, text } = this.props;
+
+        return <Button onClick={action} 
                 style={this.addButtonStyles}>
-                       Add {this.props.text}
+                       Add {text}
                 </Button>
     }
     
@@ -17,3 +20,8 @@ export default class AddButton extends React.Component {
         color: '#FFF'
     }
 }
+
+AddButton.propTypes = {
+    action: PropTypes.func.isRequired,
+    text: PropTypes.string.isRequired
+};

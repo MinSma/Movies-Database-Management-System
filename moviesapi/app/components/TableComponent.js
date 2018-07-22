@@ -8,6 +8,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import { Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import uuidv1 from  'uuid/v1';
+import PropTypes from 'prop-types';
 
 export default class TableComponent extends React.Component {
     constructor(props) {
@@ -91,3 +92,8 @@ export default class TableComponent extends React.Component {
         }
     }
 }
+
+TableComponent.propTypes = {
+    data: PropTypes.array.isRequired,
+    headers: PropTypes.array.isRequired
+};
