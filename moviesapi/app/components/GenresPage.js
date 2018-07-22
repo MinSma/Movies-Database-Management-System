@@ -14,15 +14,13 @@ class GenresPage extends React.Component {
         super(props);
 
         this.state = {
-            addDialogIsOpen: false,
-            editDialogIsOpen: false,
-            editingGenre: ''
+            dialogIsOpen: false,
+            editingGenre: undefined
         }
 
         this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
-        this.handleAddDialogClose = this.handleAddDialogClose.bind(this);
         this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
-        this.handleEditDialogClose = this.handleEditDialogClose.bind(this);
+        this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleDialogSubmit = this.handleDialogSubmit.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
     }
@@ -31,28 +29,22 @@ class GenresPage extends React.Component {
         this.props.getAllGenres();
     }
 
-    handleAddDialogClose() {
+    handleDialogClose() {
         this.setState({
-            addDialogIsOpen: false
-        });
-    }
-
-    handleEditDialogClose() {
-        this.setState({
-            editDialogIsOpen: false,
-            editingGenre: ''
+            dialogIsOpen: false,
+            editingGenre: undefined
         });
     }
 
     handleAddButtonClick() {
         this.setState({
-            addDialogIsOpen: true
+            dialogIsOpen: true
         });
     }
 
     handleEditButtonClick(genre) {
         this.setState({
-            editDialogIsOpen: true,
+            dialogIsOpen: true,
             editingGenre: genre
         });
     }
@@ -60,10 +52,19 @@ class GenresPage extends React.Component {
     handleDialogSubmit(values) {
         if(values.id === undefined) {
             this.props.addGenre(values);
+
+            this.setState({
+                dialogIsOpen: false
+            });
         } else {
             let genre = this.state.editingGenre;
             genre.name = values.name;
             this.props.editGenre(genre);
+
+            this.setState({
+                dialogIsOpen: false,
+                editingGenre: undefined
+            });
         }
     }
 
@@ -96,21 +97,24 @@ class GenresPage extends React.Component {
                 <NavigationBar />
                 <AddButton action={this.handleAddButtonClick} text={"Genre"} />
                 <TableComponent headers={headers} data={data} />
-
-                {this.state.addDialogIsOpen && <GenreDialogForm onSubmit={this.handleDialogSubmit}
-                                                                formTitle={"ADD NEW GENRE"} 
-                                                                buttonText={"ADD"}
-                                                                handleClose={this.handleAddDialogClose} />
-                }
-
-                {this.state.editDialogIsOpen && <GenreDialogForm initialValues={this.state.editingGenre}
-                                                                 onSubmit={this.handleDialogSubmit}
-                                                                 formTitle={"EDIT GENRE"}
-                                                                 buttonText={"EDIT"}
-                                                                 handleClose={this.handleEditDialogClose} />
-                }
+                {this.renderDialog()}
             </div>
         );
+    }
+
+    renderDialog() {
+        let title = this.state.editingGenre ? "EDIT GENRE" : "ADD NEW GENRE";
+        let buttonText = this.state.editingGenre ? "SAVE" : "ADD";
+    
+        if (this.state.dialogIsOpen) {
+            return <GenreDialogForm
+                onSubmit={this.handleDialogSubmit}
+                handleClose={this.handleDialogClose}
+                initialValues={this.state.editingGenre}
+                formTitle={title}
+                buttonText={buttonText}
+            />
+        }
     }
 }
 

@@ -15,12 +15,6 @@ class GenreDialogForm extends React.Component {
             isOpen: true
         }
 
-        if(Object.keys(this.props.initialValues).length === 0) {
-            initialValues.name = "";
-        } else {
-            initialValues = this.props.initialValues;
-        }
-
         this.handleClose = this.handleClose.bind(this);
         this.submitValidation = submitValidation.bind(this);
     }
@@ -30,19 +24,19 @@ class GenreDialogForm extends React.Component {
             isOpen: false
         });
 
-        if(this.props.handleClose !== undefined) {
-            this.props.handleClose();
-        }
+        this.props.handleClose();
     }
 
     render() {
+        const { initialValues, formTitle, buttonText } = this.props;
+
         return ( 
             <Dialog open={this.state.isOpen}
                     onClose={this.handleClose}
                     fullWidth={true}>
                 <form onSubmit={this.props.handleSubmit(this.submitValidation)}>
                     <DialogTitle>
-                        <span className="form-title">{this.props.formTitle}</span>
+                        <span className="form-title">{formTitle}</span>
                         <IconButton className="exit-button" onClick={this.handleClose}>
                             <CloseIcon style={{fontSize: "34px"}}/>
                         </IconButton>
@@ -66,7 +60,7 @@ class GenreDialogForm extends React.Component {
                                     float: "left",
                                     margin: "2%"
                                 }}>
-                            {this.props.buttonText}
+                            {buttonText}
                         </Button>
                         <Button variant="raised"
                                 style={{
