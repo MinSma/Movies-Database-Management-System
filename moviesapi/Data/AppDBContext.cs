@@ -11,7 +11,6 @@ namespace movieapi.Data
 
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Movie> Movies { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<Genre> Genres { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,20 +23,9 @@ namespace movieapi.Data
                 .WithMany(g => g.Movies);
 
             modelBuilder
-                .Entity<Role>()
-                .HasKey(r => new { r.MovieId, r.ActorId });
-
-            modelBuilder
-                .Entity<Role>()
-                .HasOne(r => r.Movie)
-                .WithMany(m => m.Roles)
-                .HasForeignKey(r => r.MovieId);
-
-            modelBuilder
-                .Entity<Role>()
-                .HasOne(r => r.Actor)
-                .WithMany(a => a.Roles)
-                .HasForeignKey(r => r.ActorId);
+                .Entity<Movie>()
+                .HasMany(m => m.Actors)
+                .WithOne(a => a.Movie);
         }
     }
 }

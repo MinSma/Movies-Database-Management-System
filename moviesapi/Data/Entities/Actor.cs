@@ -13,6 +13,8 @@ namespace movieapi.Data.Entities
         [Required]
         public string LastName { get; set; }
 
-        public List<Role> Roles { get; set; }
+        public int MovieId { get; set; }
+
+        public Movie Movie { get; set; }
     }
 }
