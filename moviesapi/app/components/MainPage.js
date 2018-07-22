@@ -109,7 +109,7 @@ class MainPage extends React.Component {
                         <Button onClick={this.handleEditButtonClick.bind(this, movie)} variant="raised" color="primary">Edit</Button>
                     </span>
                     <span className="tableButtons">
-                        <Button onClick={this.handleRemove.bind(this, movie.id)} variant="raised" color="primary">Remove</Button>
+                        <Button onClick={this.handleRemove.bind(this, movie.id)} variant="raised" color="secondary">Remove</Button>
                     </span>
                 </div>
             ];
