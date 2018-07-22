@@ -34,7 +34,10 @@ namespace movieapi.Data
                     Title = x.Title,
                     ReleaseDate = x.ReleaseDate,
                     GenreId = _dbContext.Genres.First(g => g.Id == x.GenreId).Id,
-                    GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name
+                    GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name,
+                    Actors = _dbContext.Actors.Where(a => a.MovieId == x.Id)
+                            .Select(a => new ActorResponse { Id = a.Id, FirstName = a.FirstName, LastName = a.LastName })
+                            .ToList()
                 })
                 .ToListAsync();
             }
@@ -47,7 +50,10 @@ namespace movieapi.Data
                     Title = x.Title,
                     ReleaseDate = x.ReleaseDate,
                     GenreId = _dbContext.Genres.First(g => g.Id == x.GenreId).Id,
-                    GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name
+                    GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name,
+                    Actors = _dbContext.Actors.Where(a => a.MovieId == x.Id)
+                            .Select(a => new ActorResponse { Id = a.Id, FirstName = a.FirstName, LastName = a.LastName })
+                            .ToList()
                 })
                 .ToListAsync();
         }
@@ -64,7 +70,10 @@ namespace movieapi.Data
                 Title = movie.Title,
                 ReleaseDate = movie.ReleaseDate,
                 GenreId = _dbContext.Genres.First(g => g.Id == movie.GenreId).Id,
-                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
+                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name,
+                Actors = _dbContext.Actors.Where(a => a.MovieId == movie.Id)
+                            .Select(a => new ActorResponse { Id = a.Id, FirstName = a.FirstName, LastName = a.LastName })
+                            .ToList()
             };
         }
 
@@ -84,17 +93,48 @@ namespace movieapi.Data
             await _dbContext
                 .SaveChangesAsync();
 
+            if (request.Actors != null)
+            {
+
+                foreach (var actor in request.Actors)
+                {
+                    await _dbContext
+                        .Actors
+                        .AddAsync(new Actor
+                        {
+                            FirstName = actor.FirstName,
+                            LastName = actor.LastName,
+                            MovieId = movie.Id
+                        });
+                }
+
+                await _dbContext
+                    .SaveChangesAsync();
+            }
+
             var genre = await _dbContext
                 .Genres
                 .SingleOrDefaultAsync(x => x.Id == request.GenreId);
 
+            var actors = _dbContext
+                .Actors
+                .Where(a => a.MovieId == movie.Id)
+                .Select(a => new ActorResponse
+                {
+                    Id = a.Id,
+                    FirstName = a.FirstName,
+                    LastName = a.LastName
+                })
+                .ToList();
+
             return new MovieResponse
             {
-                Id = _dbContext.Movies.Last().Id,
+                Id = movie.Id,
                 Title = request.Title,
                 ReleaseDate = request.ReleaseDate,
                 GenreId = genre.Id,
-                GenreName = genre.Name
+                GenreName = genre.Name,
+                Actors = actors
             };
         }
 
@@ -117,7 +157,10 @@ namespace movieapi.Data
                 Title = movie.Title,
                 ReleaseDate = movie.ReleaseDate,
                 GenreId = _dbContext.Genres.First(g => g.Id == movie.GenreId).Id,
-                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name
+                GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name,
+                Actors = _dbContext.Actors.Where(a => a.MovieId == movie.Id)
+                            .Select(a => new ActorResponse { Id = a.Id, FirstName = a.FirstName, LastName = a.LastName })
+                            .ToList()
             };
         }
 
