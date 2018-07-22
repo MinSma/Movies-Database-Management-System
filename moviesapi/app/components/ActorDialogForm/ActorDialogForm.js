@@ -50,7 +50,6 @@ class ActorDialogForm extends React.Component {
                     </DialogTitle>
                     <DialogContent>
                         <div className="form-content">
-                            <div className="error-message">{this.props.error && <strong>{this.props.error}</strong>}</div>
                             <p className="required-field">First Name:</p>
                             <Field
                                 name="firstName"

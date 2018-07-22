@@ -14,7 +14,7 @@ export function typeValidation(values) {
 
 export function submitValidation(values) {
     if(!values['name']) {
-        throw new SubmissionError({ title: "Name value required.", 
+        throw new SubmissionError({ name: "Name value required.", 
                                     _error: "Name value required." });
     }
 

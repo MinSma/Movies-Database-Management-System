@@ -49,7 +49,6 @@ class GenreDialogForm extends React.Component {
                     </DialogTitle>
                     <DialogContent>
                         <div className="form-content">
-                            <div className="error-message">{this.props.error && <strong>{this.props.error}</strong>}</div>
                             <p className="required-field">Name:</p>
                             <Field
                                 name="name"
