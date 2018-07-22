@@ -15,15 +15,13 @@ class MainPage extends React.Component {
         super(props);
 
         this.state = {
-            addDialogIsOpen: false,
-            editDialogIsOpen: false,
-            editingMovie: ''
+            dialogIsOpen: false,
+            editingMovie: undefined
         }
 
         this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
-        this.handleAddDialogClose = this.handleAddDialogClose.bind(this);
         this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
-        this.handleEditDialogClose = this.handleEditDialogClose.bind(this);
+        this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleDialogSubmit = this.handleDialogSubmit.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
     }
@@ -33,22 +31,16 @@ class MainPage extends React.Component {
         this.props.getAllGenres();
     }
 
-    handleAddDialogClose() {
+    handleDialogClose() {
         this.setState({
-            addDialogIsOpen: false
+            dialogIsOpen: false,
+            editingMovie: undefined
         });
     }
 
     handleAddButtonClick() {
         this.setState({
-            addDialogIsOpen: true
-        });
-    }
-
-    handleEditDialogClose() {
-        this.setState({
-            editDialogIsOpen: false,
-            editingMovie: ''
+            dialogIsOpen: true
         });
     }
 
@@ -58,7 +50,7 @@ class MainPage extends React.Component {
         movie.day = dateFormat(movie.releaseDate, "dd");
 
         this.setState({
-            editDialogIsOpen: true,
+            dialogIsOpen: true,
             editingMovie: movie
         });
     }
@@ -72,6 +64,10 @@ class MainPage extends React.Component {
             };
 
             this.props.addMovie(movie);
+
+            this.setState({
+                dialogIsOpen: false
+            });
         } else {
             let movie = {
                 id: values.id,
@@ -81,6 +77,11 @@ class MainPage extends React.Component {
             };
             
             this.props.editMovie(movie);
+
+            this.setState({
+                editingMovie: undefined,
+                dialogIsOpen: false
+            });
         }
     }
 
@@ -117,23 +118,25 @@ class MainPage extends React.Component {
                 <NavigationBar handleSearch={this.props.getAllMovies} />
                 <AddButton action={this.handleAddButtonClick} text={"Movie"} />
                 <TableComponent headers={headers} data={data} />
-
-                {this.state.addDialogIsOpen && <MovieDialogForm onSubmit={this.handleDialogSubmit}
-                                                                formTitle={"ADD NEW MOVIE"} 
-                                                                buttonText={"ADD"}
-                                                                handleClose={this.handleAddDialogClose} 
-                                                                genres={this.props.genres} />
-                }
-
-                {this.state.editDialogIsOpen && <MovieDialogForm initialValues={this.state.editingMovie}
-                                                                 onSubmit={this.handleDialogSubmit}
-                                                                 formTitle={"EDIT MOVIE"}
-                                                                 buttonText={"EDIT"}
-                                                                 handleClose={this.handleEditDialogClose}
-                                                                 genres={this.props.genres} />
-                }
+                {this.renderDialog()}
             </div>
         );
+    }
+
+    renderDialog() {
+        let title = this.state.editingMovie ? "EDIT MOVIE" : "ADD NEW MOVIE";
+        let buttonText = this.state.editingMovie ? "SAVE" : "ADD";
+    
+        if (this.state.dialogIsOpen) {
+            return <MovieDialogForm
+                onSubmit={this.handleDialogSubmit}
+                handleClose={this.handleDialogClose}
+                initialValues={this.state.editingMovie}
+                formTitle={title}
+                buttonText={buttonText}
+                genres={this.props.genres}
+            />
+        }
     }
 }
 
