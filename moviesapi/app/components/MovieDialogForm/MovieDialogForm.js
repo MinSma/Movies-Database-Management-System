@@ -4,8 +4,6 @@ import { Close as CloseIcon } from '@material-ui/icons';
 import { Button, Input } from '@material-ui/core';
 import { Field, reduxForm } from 'redux-form';
 import { submitValidation, typeValidation } from './validation';
-import dateFormat from 'dateformat';
-
 let initialValues = {};
 
 class MovieDialogForm extends React.Component {
@@ -15,18 +13,6 @@ class MovieDialogForm extends React.Component {
         this.state = {
             isOpen: true,
             genreId: ''
-        }
-
-        if(Object.keys(this.props.initialValues).length === 0) {
-            initialValues.title = "";
-            initialValues.year = "";
-            initialValues.month = "";
-            initialValues.day = "";
-        } else {
-            initialValues.title = this.props.initialValues.title;
-            initialValues.year = dateFormat(this.props.initialValues.releaseDate, "yyyy");
-            initialValues.month = dateFormat(this.props.initialValues.releaseDate, "mm");
-            initialValues.day = dateFormat(this.props.initialValues.releaseDate, "dd");
         }
 
         this.handleClose = this.handleClose.bind(this);
@@ -46,9 +32,7 @@ class MovieDialogForm extends React.Component {
             isOpen: false
         });
 
-        if(this.props.handleClose !== undefined) {
-            this.props.handleClose();
-        }
+        this.props.handleClose();
     }
 
     handleGenreSelection(e) {
@@ -58,13 +42,15 @@ class MovieDialogForm extends React.Component {
     }
 
     render() {
+        const { initialValues, buttonText, formTitle } = this.props;
+
         return ( 
             <Dialog open={this.state.isOpen}
                     onClose={this.handleClose}
                     fullWidth={true}>
                 <form onSubmit={this.props.handleSubmit(this.submitValidation)}>
                     <DialogTitle>
-                        <span className="form-title">{this.props.formTitle}</span>
+                        <span className="form-title">{formTitle}</span>
                         <IconButton className="exit-button" onClick={this.handleClose}>
                             <CloseIcon style={{fontSize: "34px"}}/>
                         </IconButton>
@@ -121,7 +107,7 @@ class MovieDialogForm extends React.Component {
                                     float: "left",
                                     margin: "2%"
                                 }}>
-                            {this.props.buttonText}
+                            {buttonText}
                         </Button>
                         <Button variant="raised"
                                 style={{
@@ -187,22 +173,25 @@ class MovieDialogForm extends React.Component {
 
         delete props.input.value;
         return (
-            <Select
-                native
-                style={{
-                    width: props.width,
-                    backgroundColor: "white",
-                    border: "1px solid #DADFE1",
-                    borderRadius: "5px"
-                }}
-                className="inputDropdown"
-                {...props.input}
-                {...props.custom}
-                value={props.inputText}
-                disabled={props.disabled}
-            >
-                {selections}
-            </Select>
+            <div>
+                {props.meta.touched && props.meta.error && <div className="error-message">{props.meta.error}</div>}
+                <Select
+                    native
+                    style={{
+                        width: props.width,
+                        backgroundColor: "white",
+                        border: "1px solid #DADFE1",
+                        borderRadius: "5px"
+                    }}
+                    className="inputDropdown"
+                    {...props.input}
+                    {...props.custom}
+                    value={props.inputText}
+                    disabled={props.disabled}
+                >
+                    {selections}
+                </Select>
+            </div>
         );
     }
 
