@@ -60,7 +60,8 @@ class MainPage extends React.Component {
             let movie = {
                 title: values.title,
                 releaseDate: `${values.year}-${values.month}-${values.day}`,
-                genreId: values.genreId
+                genreId: values.genreId,
+                actors: values.actors
             };
 
             this.props.addMovie(movie);
@@ -73,7 +74,8 @@ class MainPage extends React.Component {
                 id: values.id,
                 title: values.title,
                 releaseDate: `${values.year}-${values.month}-${values.day}`,
-                genreId: values.genreId
+                genreId: values.genreId,
+                actors: values.actors
             };
             
             this.props.editMovie(movie);
