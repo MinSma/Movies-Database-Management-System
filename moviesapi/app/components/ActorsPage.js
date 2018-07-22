@@ -14,15 +14,13 @@ class ActorsPage extends React.Component {
         super(props);
 
         this.state = {
-            addDialogIsOpen: false,
-            editDialogIsOpen: false,
-            editingActor: ''
+            dialogIsOpen: false,
+            editingActor: undefined
         }
 
         this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
-        this.handleAddDialogClose = this.handleAddDialogClose.bind(this);
         this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
-        this.handleEditDialogClose = this.handleEditDialogClose.bind(this);
+        this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleDialogSubmit = this.handleDialogSubmit.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
     }
@@ -31,28 +29,22 @@ class ActorsPage extends React.Component {
         this.props.getAllActors();
     }
 
-    handleAddDialogClose() {
+    handleDialogClose() {
         this.setState({
-            addDialogIsOpen: false
-        });
-    }
-
-    handleEditDialogClose() {
-        this.setState({
-            editDialogIsOpen: false,
-            editingActor: ''
+            dialogIsOpen: false,
+            editingActor: undefined
         });
     }
 
     handleAddButtonClick() {
         this.setState({
-            addDialogIsOpen: true
+            dialogIsOpen: true
         });
     }
 
     handleEditButtonClick(actor) {
         this.setState({
-            editDialogIsOpen: true,
+            dialogIsOpen: true,
             editingActor: actor
         })
     };
@@ -60,6 +52,10 @@ class ActorsPage extends React.Component {
     handleDialogSubmit(values) {
         if(values.id === undefined) { 
             this.props.addActor(values);
+
+            this.setState({
+                dialogIsOpen: false
+            });
         } else {
             let actor = this.state.editingActor;
             
@@ -67,6 +63,11 @@ class ActorsPage extends React.Component {
             actor.lastName = values.lastName;
 
             this.props.editActor(actor);
+
+            this.setState({
+                dialogIsOpen: false,
+                editingActor: undefined
+            });
         }
     }
 
@@ -101,28 +102,24 @@ class ActorsPage extends React.Component {
                 <NavigationBar />
                 <AddButton action={this.handleAddButtonClick} text={"Actor"} />
                 <TableComponent headers={headers} data={data} />
-
-                {this.state.addDialogIsOpen && <ActorDialogForm onSubmit={this.handleDialogSubmit}
-                                                             formTitle={"ADD NEW ACTOR"} 
-                                                             buttonText={"ADD"}
-                                                             handleClose={this.handleAddDialogClose} />
-                }
-
-                {this.state.editDialogIsOpen && <ActorDialogForm initialValues={this.state.editingActor}
-                                                                 onSubmit={this.handleDialogSubmit}
-                                                                 formTitle={"EDIT ACTOR"}
-                                                                 buttonText={"EDIT"}
-                                                                 handleClose={this.handleEditDialogClose} />
-                }
+                {this.renderDialog()}
             </div>
         );
+    }
 
-        return (
-            <div>
-                <NavigationBar />
-                <div>Actors Page</div>
-            </div>
-        );
+    renderDialog() {
+        let title = this.state.editingActor ? "EDIT ACTOR" : "ADD NEW ACTOR";
+        let buttonText = this.state.editingActor ? "SAVE" : "ADD";
+    
+        if (this.state.dialogIsOpen) {
+            return <ActorDialogForm
+                onSubmit={this.handleDialogSubmit}
+                handleClose={this.handleDialogClose}
+                initialValues={this.state.editingActor}
+                formTitle={title}
+                buttonText={buttonText}
+            />
+        }
     }
 }
 
