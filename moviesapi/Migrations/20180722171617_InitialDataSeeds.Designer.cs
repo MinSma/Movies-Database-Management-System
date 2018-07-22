@@ -11,7 +11,7 @@ using System;
 namespace movieapi.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20180719192802_InitialDataSeeds")]
+    [Migration("20180722171617_InitialDataSeeds")]
     partial class InitialDataSeeds
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,11 @@ namespace movieapi.Migrations
                     b.Property<string>("LastName")
                         .IsRequired();
 
+                    b.Property<int>("MovieId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Actors");
                 });
@@ -69,20 +73,12 @@ namespace movieapi.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("movieapi.Data.Entities.Role", b =>
+            modelBuilder.Entity("movieapi.Data.Entities.Actor", b =>
                 {
-                    b.Property<int>("MovieId");
-
-                    b.Property<int>("ActorId");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("MovieId", "ActorId");
-
-                    b.HasIndex("ActorId");
-
-                    b.ToTable("Roles");
+                    b.HasOne("movieapi.Data.Entities.Movie", "Movie")
+                        .WithMany("Actors")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("movieapi.Data.Entities.Movie", b =>
@@ -90,19 +86,6 @@ namespace movieapi.Migrations
                     b.HasOne("movieapi.Data.Entities.Genre", "Genre")
                         .WithMany("Movies")
                         .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("movieapi.Data.Entities.Role", b =>
-                {
-                    b.HasOne("movieapi.Data.Entities.Actor", "Actor")
-                        .WithMany("Roles")
-                        .HasForeignKey("ActorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("movieapi.Data.Entities.Movie", "Movie")
-                        .WithMany("Roles")
-                        .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
