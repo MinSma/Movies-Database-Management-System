@@ -5,6 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
+import { Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import uuidv1 from  'uuid/v1';
 
@@ -58,6 +59,7 @@ export default class TableComponent extends React.Component {
                                 })}
                         </TableBody>
                     </Table>
+                    {this.renderNoDataText(data.length)}
 
                     <TablePagination
                         component="div"
@@ -77,5 +79,15 @@ export default class TableComponent extends React.Component {
                 </Paper>
             </div>
         );
+    }
+
+    renderNoDataText(length) {
+        if (length === 0) {
+            return (
+                <Typography variant="subheading" gutterBottom align="center">
+                    Table contains no data.
+                </Typography>
+            );
+        }
     }
 }
