@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppBar, Toolbar, TextField } from "@material-ui/core";
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const linkStyles = {
     color: '#FFF', 
@@ -25,13 +26,15 @@ export default class NavigationBar extends React.Component {
     }
 
     render() {
+        const { handleSearch } = this.props;
+
         return  <AppBar position="static">
                     <Toolbar>
                         <Link to="/" style={linkStyles}>Home</Link>
                         <Link to="/actors" style={linkStyles}>Actors</Link>
                         <Link to="/genres" style={linkStyles}>Genres</Link>
                         
-                        {this.props.handleSearch ?
+                        {handleSearch ?
                             <TextField
                                 className={'searchBox'}
                                 placeholder="Search"
@@ -44,3 +47,7 @@ export default class NavigationBar extends React.Component {
                 </AppBar>;
     }
 }
+
+NavigationBar.propTypes = {
+    handleSearch: PropTypes.func
+};

@@ -4,6 +4,7 @@ import { Close as CloseIcon } from '@material-ui/icons';
 import { Button, Input } from '@material-ui/core';
 import { Field, reduxForm } from 'redux-form';
 import { submitValidation, typeValidation } from './validation';
+import PropTypes from 'prop-types';
 
 let initialValues = {};
 
@@ -118,6 +119,14 @@ class ActorDialogForm extends React.Component {
         );
     }
 }
+
+ActorDialogForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    initialValues: PropTypes.object,
+    formTitle: PropTypes.string.isRequired,
+    buttonText: PropTypes.string.isRequired
+};
 
 export default reduxForm({ 
     form: 'ActorDialogForm',
