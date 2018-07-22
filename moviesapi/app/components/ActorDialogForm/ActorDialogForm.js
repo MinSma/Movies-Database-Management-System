@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, IconButton } from '@material-ui/cor
 import { Close as CloseIcon } from '@material-ui/icons';
 import { Button, Input } from '@material-ui/core';
 import { Field, reduxForm } from 'redux-form';
-import { submitValidation } from './validation';
+import { submitValidation, typeValidation } from './validation';
 
 let initialValues = {};
 
@@ -112,6 +112,7 @@ class ActorDialogForm extends React.Component {
         delete props.input.value;
         return(
             <div>
+                {props.meta.touched && props.meta.error && <span className="error-message">{props.meta.error}</span>}
                 <Input
                     style={props.style}
                     className={props.className}
@@ -119,7 +120,6 @@ class ActorDialogForm extends React.Component {
                     error={props.meta.invalid}
                     defaultValue={props.inputText}
                 />
-                {props.touched && props.error && <span>{props.error}</span>}
             </div>
         );
     }
@@ -127,5 +127,6 @@ class ActorDialogForm extends React.Component {
 
 export default reduxForm({ 
     form: 'ActorDialogForm',
+    validate: typeValidation,
     initialValues: initialValues
 })(ActorDialogForm);

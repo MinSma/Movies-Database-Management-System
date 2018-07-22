@@ -1,5 +1,21 @@
 import { SubmissionError } from 'redux-form';
 
+export function typeValidation(values) {
+    let errors = {};
+
+    let nameRegex = /^[A-Za-z]*$/;
+
+    if(values['firstName'] !== undefined && !values['firstName'].match(nameRegex)) {
+        errors.firstName = "Wrong first name format";
+    }
+
+    if(values['lastName'] !== undefined && !values['lastName'].match(nameRegex)) {
+        errors.lastName = "Wrong last name format";
+    }
+
+    return errors;
+}
+
 export function submitValidation(values) {
     if(!values['firstName']) {
         throw new SubmissionError({ 
