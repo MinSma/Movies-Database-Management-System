@@ -2,10 +2,10 @@ import React from 'react';
 import { Dialog, DialogTitle, DialogContent, IconButton, Select } from '@material-ui/core';
 import { Close as CloseIcon } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { submitValidation, typeValidation } from './validation';
 import PropTypes from 'prop-types';
-import { renderInputStyles, renderInputBox, renderDateInputStyles } from '../renderFunctionsForDialogs';
+import { renderInputStyles, renderInputBox, renderDateInputStyles, renderActors } from '../renderFunctionsForDialogs';
 
 let initialValues = {};
 
@@ -108,8 +108,9 @@ class MovieDialogForm extends React.Component {
                                 inputText={this.state.genreId}
                                 component={this.renderDropdown}
                                 primarySelection={true}
-                                onChange={(event) => handleGenreSelection(event)}
+                                onChange={(event) => this.handleGenreSelection(event)}
                             />
+                            {buttonText === 'ADD' && <FieldArray name="actors" component={renderActors} />}
                         </div>
                         <Button type="submit" variant="raised" color="primary"
                                 style={{
