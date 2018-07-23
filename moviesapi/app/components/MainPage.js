@@ -145,12 +145,6 @@ class MainPage extends React.Component {
                 {this.renderAddEditDialog()}
                 {this.state.actorControlDialogIsOpen && <ActorControlDialogForm movieId={this.state.editingMovie.id}
                                                                                 handleClose={this.handleActorsManagementDialogClose}
-                                                                                addActor={this.props.addActor}
-                                                                                removeActor={this.props.removeActor}
-                                                                                editActor={this.props.editActor}
-                                                                                actors={this.props.actors}
-                                                                                addRelationship={this.props.addRelationship}
-                                                                                removeRelationship={this.props.removeRelationship}
                 />}
             </div>
         );

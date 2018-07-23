@@ -5,6 +5,7 @@ import { Dialog, DialogTitle, DialogContent, IconButton } from '@material-ui/cor
 import TableComponent from '../TableComponent';
 import ActorDialogForm from '../ActorDialogForm/ActorDialogForm';
 import AddExistingActorDialogForm from '../AddExistingActorDialogForm/AddExistingActorDialogForm';
+import PropTypes from 'prop-types';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -228,13 +229,19 @@ class ActorControlDialogForm extends React.Component {
     }
 }
 
+ActorControlDialogForm.propTypes = {
+    movieId: PropTypes.number.isRequired,
+    handleClose: PropTypes.func.isRequired
+};
+
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators(actionCreators, dispatch);
 }
 
 const mapStateToProps = (store) => {
     return {
-        movie: store.movie
+        movie: store.movie,
+        actors: store.actors
     }
 }
 
