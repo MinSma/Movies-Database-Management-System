@@ -38,6 +38,11 @@ namespace movieapi.Data
                 LastName = request.LastName
             };
 
+            if (request.MovieId.HasValue)
+            {
+                actor.MovieId = request.MovieId.Value;
+            }
+
             await _dbContext
                 .Actors
                 .AddAsync(actor);

@@ -9,6 +9,7 @@ import { Button } from '@material-ui/core';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../actions';
+import ActorControlDialogForm from "./ActorControlDialogForm/ActorControlDialogForm";
 
 class MainPage extends React.Component {
     constructor(props) {
@@ -16,10 +17,13 @@ class MainPage extends React.Component {
 
         this.state = {
             dialogIsOpen: false,
+            actorControlDialogIsOpen: false,
             editingMovie: undefined
         }
 
         this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
+        this.handleActorsManagement = this.handleActorsManagement.bind(this);
+        this.handleActorsManagementDialogClose = this.handleActorsManagementDialogClose.bind(this);
         this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleDialogSubmit = this.handleDialogSubmit.bind(this);
@@ -29,6 +33,7 @@ class MainPage extends React.Component {
     componentDidMount() {
         this.props.getAllMovies();
         this.props.getAllGenres();
+        this.props.getAllActors();
     }
 
     handleDialogClose() {
@@ -91,6 +96,20 @@ class MainPage extends React.Component {
         this.props.removeMovie(id);
     }
 
+    handleActorsManagement(movie) {
+        this.setState({
+            actorControlDialogIsOpen: true,
+            editingMovie: movie
+        });
+    }
+
+    handleActorsManagementDialogClose() {
+        this.setState({
+            actorControlDialogIsOpen: false,
+            editingMovie: undefined
+        });
+    }
+
     render () {
         var headers = [ 
             'Title',
@@ -109,6 +128,9 @@ class MainPage extends React.Component {
                         <Button onClick={this.handleEditButtonClick.bind(this, movie)} variant="raised" color="primary">Edit</Button>
                     </span>
                     <span className="tableButtons">
+                        <Button onClick={this.handleActorsManagement.bind(this, movie)} variant="raised" color="primary">Actors</Button>
+                    </span>
+                    <span className="tableButtons">
                         <Button onClick={this.handleRemove.bind(this, movie.id)} variant="raised" color="secondary">Remove</Button>
                     </span>
                 </div>
@@ -120,12 +142,19 @@ class MainPage extends React.Component {
                 <NavigationBar handleSearch={this.props.getAllMovies} />
                 <AddButton action={this.handleAddButtonClick} text={"Movie"} />
                 <TableComponent headers={headers} data={data} />
-                {this.renderDialog()}
+                {this.renderAddEditDialog()}
+                {this.state.actorControlDialogIsOpen && <ActorControlDialogForm movie={this.state.editingMovie}
+                                                                                handleClose={this.handleActorsManagementDialogClose}
+                                                                                addActor={this.props.addActor}
+                                                                                removeActor={this.props.removeActor}
+                                                                                editActor={this.props.editActor}
+                                                                                actors={this.props.actors}
+                />}
             </div>
         );
     }
 
-    renderDialog() {
+    renderAddEditDialog() {
         let title = this.state.editingMovie ? "EDIT MOVIE" : "ADD NEW MOVIE";
         let buttonText = this.state.editingMovie ? "SAVE" : "ADD";
     
@@ -149,7 +178,8 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (store) => {
     return {
         movies: store.movies,
-        genres: store.genres
+        genres: store.genres,
+        actors: store.actors
     }
 }
 
