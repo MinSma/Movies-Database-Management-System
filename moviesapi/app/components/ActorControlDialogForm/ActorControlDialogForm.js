@@ -5,8 +5,13 @@ import { Dialog, DialogTitle, DialogContent, IconButton } from '@material-ui/cor
 import TableComponent from '../TableComponent';
 import ActorDialogForm from '../ActorDialogForm/ActorDialogForm';
 import AddExistingActorDialogForm from '../AddExistingActorDialogForm/AddExistingActorDialogForm';
+import PropTypes from 'prop-types';
 
-export default class ActorControlDialogForm extends React.Component {
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as actionCreators from '../../actions';
+
+class ActorControlDialogForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -26,6 +31,10 @@ export default class ActorControlDialogForm extends React.Component {
         this.handleAddExisting = this.handleAddExisting.bind(this);
         this.handleAddExistingClose = this.handleAddExistingClose.bind(this);
         this.onSubmitAddExisting = this.onSubmitAddExisting.bind(this);
+    }
+    
+    componentDidMount() {
+        this.props.getMovieById(this.props.movieId);
     }
 
     handleClose() {
@@ -57,7 +66,19 @@ export default class ActorControlDialogForm extends React.Component {
     }
 
     handleRemove(id) {
-        this.props.removeActor(id);
+        let values = {};
+
+        values.actorId = id;
+        values.movieId = this.props.movie.id;
+        
+        this.props.removeRelationship(values);
+
+        let func = this.props.getMovieById;
+        let movieId = this.props.movieId;
+
+            setTimeout(function timeout() {
+                func(movieId);
+              }, 1000);
     }
 
     handleDialogSubmit(values) {
@@ -65,6 +86,13 @@ export default class ActorControlDialogForm extends React.Component {
             values.movieId = this.props.movie.id;
 
             this.props.addActor(values);
+
+            let func = this.props.getMovieById;
+            let movieId = this.props.movieId;
+
+            setTimeout(function timeout() {
+                func(movieId);
+              }, 1000);
 
             this.setState({
                 dialogIsOpen: false
@@ -98,7 +126,22 @@ export default class ActorControlDialogForm extends React.Component {
     }
 
     onSubmitAddExisting(values) {
-        console.log(values);
+        values.movieId = this.props.movie.id;
+        
+        this.props.addRelationship(values);
+
+        let func = this.props.getMovieById;
+        let movieId = this.props.movieId;
+
+            setTimeout(function timeout() {
+                func(movieId);
+              }, 1000);
+
+        this.props.getMovieById(this.props.movieId);
+
+        this.setState({
+            addExistingDialogOn: false
+        });
     }
 
     render() {
@@ -108,7 +151,7 @@ export default class ActorControlDialogForm extends React.Component {
             'Actions'
         ];
 
-        var data = this.props.movie.actors.map((actor) => {
+        var data = this.props.movie.actors !== undefined ? this.props.movie.actors.map((actor) => {
             return [ 
                 actor.firstName, 
                 actor.lastName,
@@ -121,7 +164,7 @@ export default class ActorControlDialogForm extends React.Component {
                     </span>
                 </div>
             ];
-        });
+        }) : [];
 
         return ( 
             <Dialog open={this.state.isOpen}
@@ -138,27 +181,25 @@ export default class ActorControlDialogForm extends React.Component {
                         <Button variant="raised" color="primary"
                                 style={{
                                     width: "20%", 
-                                    height: "40px", 
+                                    height: "50px", 
                                     margin: "5% 2%",
                                     fontSize: "12px",
                                     float: "left",
                                     margin: "2%"
                                 }}
                                 onClick={this.handleAddExisting}>
-                                    <CloseIcon style={{fontSize: "12px"}}/>
                                     ADD EXISTING 
                         </Button>
                         <Button variant="raised" color="primary"
                                 style={{
                                     width: "20%", 
-                                    height: "40px", 
+                                    height: "50px", 
                                     margin: "5% 2%",
                                     fontSize: "12px",
                                     float: "left",
                                     margin: "2%"
                                 }}
                                 onClick={this.handleAddButtonClick}>
-                                    <CloseIcon style={{fontSize: "12px"}}/>
                                     ADD NEW 
                         </Button>
                         {this.renderDialog()}
@@ -187,3 +228,21 @@ export default class ActorControlDialogForm extends React.Component {
         }
     }
 }
+
+ActorControlDialogForm.propTypes = {
+    movieId: PropTypes.number.isRequired,
+    handleClose: PropTypes.func.isRequired
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators(actionCreators, dispatch);
+}
+
+const mapStateToProps = (store) => {
+    return {
+        movie: store.movie,
+        actors: store.actors
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActorControlDialogForm);

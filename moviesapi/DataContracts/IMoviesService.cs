@@ -1,5 +1,4 @@
-﻿using movieapi.Data.Entities;
-using movieapi.DataContracts.Requests;
+﻿using movieapi.DataContracts.Requests;
 using movieapi.DataContracts.Responses;
 using System.Collections.Generic;
 using System.Threading.Tasks;

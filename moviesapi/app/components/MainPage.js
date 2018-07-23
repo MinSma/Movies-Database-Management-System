@@ -5,11 +5,11 @@ import TableComponent from "./TableComponent";
 import AddButton from './AddButton';
 import MovieDialogForm from './MovieDialogForm/MovieDialogForm';
 import { Button } from '@material-ui/core';
+import ActorControlDialogForm from "./ActorControlDialogForm/ActorControlDialogForm";
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../actions';
-import ActorControlDialogForm from "./ActorControlDialogForm/ActorControlDialogForm";
 
 class MainPage extends React.Component {
     constructor(props) {
@@ -143,12 +143,8 @@ class MainPage extends React.Component {
                 <AddButton action={this.handleAddButtonClick} text={"Movie"} />
                 <TableComponent headers={headers} data={data} />
                 {this.renderAddEditDialog()}
-                {this.state.actorControlDialogIsOpen && <ActorControlDialogForm movie={this.state.editingMovie}
+                {this.state.actorControlDialogIsOpen && <ActorControlDialogForm movieId={this.state.editingMovie.id}
                                                                                 handleClose={this.handleActorsManagementDialogClose}
-                                                                                addActor={this.props.addActor}
-                                                                                removeActor={this.props.removeActor}
-                                                                                editActor={this.props.editActor}
-                                                                                actors={this.props.actors}
                 />}
             </div>
         );

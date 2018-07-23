@@ -7,6 +7,7 @@ const ADD_ACTOR = 'ADD_ACTOR';
 const EDIT_ACTOR = 'EDIT_ACTOR';
 const REMOVE_ACTOR = 'REMOVE_ACTOR';
 const GET_ALL_MOVIES = 'GET_ALL_MOVIES';
+const GET_MOVIE_BY_ID = 'GET_MOVIE_BY_ID';
 const ADD_MOVIE = 'ADD_MOVIE';
 const EDIT_MOVIE = 'EDIT_MOVIE';
 const REMOVE_MOVIE = 'REMOVE_MOVIE';
@@ -164,6 +165,22 @@ export const getAllMovies = (text) => (dispatch) => {
     }).catch((error) => console.log(error));
 };
 
+export const getMovieById = (id) => (dispatch) => {
+    fetch(`${url}/api/movies/${id}`, {
+        method: 'GET',
+        headers,
+        credentials: 'include'
+    }).then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_MOVIE_BY_ID,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.log(error));
+}
+
 export const addMovie = (values) => (dispatch) => {
     fetch(`${url}/api/movies`, {
         method: 'POST',
@@ -210,5 +227,23 @@ export const removeMovie = (id) => (dispatch) => {
                 id: id
             });
         };
+    }).catch((error) => console.log(error));
+}
+
+export const removeRelationship = (values) => (dispatch) => {
+    fetch(`${url}/api/actors/relationship`, {
+        method: 'DELETE',
+        headers,
+        body: JSON.stringify(values),
+        credentials: 'include'
+    }).catch((error) => console.log(error));
+}
+
+export const addRelationship = (values) => (dispatch) => {
+    fetch(`${url}/api/actors/relationship`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(values),
+        credentials: 'include'
     }).catch((error) => console.log(error));
 }

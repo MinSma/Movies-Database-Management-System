@@ -2,6 +2,7 @@
 using movieapi.Data.Entities;
 using movieapi.DataContracts;
 using movieapi.DataContracts.Requests;
+using movieapi.DataContracts.Responses;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,21 +18,34 @@ namespace movieapi.Data
             _dbContext = dBContext;
         }
 
-        public async Task<List<Actor>> GetAll()
+        public async Task<List<ActorResponse>> GetAll()
         {
             return await _dbContext
                 .Actors
+                .Select(x => new ActorResponse
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName
+                })
                 .ToListAsync();
         }
 
-        public async Task<Actor> GetById(int id)
+        public async Task<ActorResponse> GetById(int id)
         {
-            return await _dbContext
+            var actor = await _dbContext
                 .Actors
                 .SingleOrDefaultAsync(x => x.Id == id);
+
+            return new ActorResponse
+            {
+                Id = actor.Id,
+                FirstName = actor.FirstName,
+                LastName = actor.LastName
+            };
         }
 
-        public async Task<Actor> Create(ActorCreateUpdateRequest request)
+        public async Task<ActorResponse> Create(ActorCreateUpdateRequest request)
         {
             var actor = new Actor
             {
@@ -48,19 +62,27 @@ namespace movieapi.Data
 
             if (request.MovieId.HasValue)
             {
-                _dbContext
+                await _dbContext
                     .ActorMovies
-                    .Add(new ActorMovie
+                    .AddAsync(new ActorMovie
                     {
                         ActorId = actor.Id,
                         MovieId = request.MovieId.Value
                     });
             }
 
-            return actor;
+            await _dbContext.
+                SaveChangesAsync();
+
+            return new ActorResponse
+            {
+                Id = actor.Id,
+                FirstName = actor.FirstName,
+                LastName = actor.LastName
+            };
         }
 
-        public async Task<Actor> Update(int id, ActorCreateUpdateRequest request)
+        public async Task<ActorResponse> Update(int id, ActorCreateUpdateRequest request)
         {
             var actor = await _dbContext
                 .Actors
@@ -72,7 +94,12 @@ namespace movieapi.Data
             await _dbContext
                 .SaveChangesAsync();
 
-            return actor;
+            return new ActorResponse
+            {
+                Id = actor.Id,
+                FirstName = actor.FirstName,
+                LastName = actor.LastName
+            };
         }
 
         public async Task Delete(int id)
@@ -93,6 +120,47 @@ namespace movieapi.Data
 
             await _dbContext
                 .SaveChangesAsync();
+        }
+
+        public async Task DeleteRelationship(CreateDeleteRelationshipRequest request)
+        {
+            _dbContext
+                .ActorMovies
+                .Remove(
+                    await _dbContext
+                    .ActorMovies
+                    .Where(x => x.ActorId == request.ActorId && x.MovieId == request.MovieId)
+                    .FirstAsync()
+                );
+
+            await _dbContext
+                .SaveChangesAsync();
+        }
+
+
+        public async Task<ActorResponse> CreateRelationship(CreateDeleteRelationshipRequest request)
+        {
+            await _dbContext
+                .ActorMovies
+                .AddAsync(new ActorMovie
+                {
+                    ActorId = request.ActorId,
+                    MovieId = request.MovieId
+                });
+
+            await _dbContext
+                .SaveChangesAsync();
+
+            var actor = await _dbContext
+                .Actors
+                .FirstAsync(x => x.Id == request.ActorId);
+
+            return new ActorResponse
+            {
+                Id = actor.Id,
+                FirstName = actor.FirstName,
+                LastName = actor.LastName
+            };
         }
     }
 }
