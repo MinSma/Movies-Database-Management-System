@@ -9,5 +9,7 @@ namespace movieapi.DataContracts.Requests
 
         [Required]
         public string LastName { get; set; }
+
+        public int? MovieId { get; set; }
     }
 }
