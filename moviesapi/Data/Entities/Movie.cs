@@ -17,6 +17,6 @@ namespace movieapi.Data.Entities
 
         public Genre Genre { get; set; }
 
-        public List<Actor> Actors { get; set; }
+        public List<ActorMovie> ActorMovies { get; set; }
     }
 }
