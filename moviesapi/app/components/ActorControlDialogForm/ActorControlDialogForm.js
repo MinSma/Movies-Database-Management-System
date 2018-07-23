@@ -6,7 +6,11 @@ import TableComponent from '../TableComponent';
 import ActorDialogForm from '../ActorDialogForm/ActorDialogForm';
 import AddExistingActorDialogForm from '../AddExistingActorDialogForm/AddExistingActorDialogForm';
 
-export default class ActorControlDialogForm extends React.Component {
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as actionCreators from '../../actions';
+
+class ActorControlDialogForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -26,6 +30,10 @@ export default class ActorControlDialogForm extends React.Component {
         this.handleAddExisting = this.handleAddExisting.bind(this);
         this.handleAddExistingClose = this.handleAddExistingClose.bind(this);
         this.onSubmitAddExisting = this.onSubmitAddExisting.bind(this);
+    }
+    
+    componentDidMount() {
+        this.props.getMovieById(this.props.movieId);
     }
 
     handleClose() {
@@ -57,7 +65,13 @@ export default class ActorControlDialogForm extends React.Component {
     }
 
     handleRemove(id) {
-        this.props.removeActor(id);
+        let values = {};
+
+        values.actorId = id;
+        values.movieId = this.props.movie.id;
+        
+        this.props.removeRelationship(values);
+        this.props.getMovieById(this.props.movieId);
     }
 
     handleDialogSubmit(values) {
@@ -65,6 +79,7 @@ export default class ActorControlDialogForm extends React.Component {
             values.movieId = this.props.movie.id;
 
             this.props.addActor(values);
+            this.props.getMovieById(this.props.movieId);
 
             this.setState({
                 dialogIsOpen: false
@@ -98,7 +113,14 @@ export default class ActorControlDialogForm extends React.Component {
     }
 
     onSubmitAddExisting(values) {
-        console.log(values);
+        values.movieId = this.props.movie.id;
+        
+        this.props.addRelationship(values);
+        this.props.getMovieById(this.props.movieId);
+
+        this.setState({
+            addExistingDialogOn: false
+        });
     }
 
     render() {
@@ -108,7 +130,7 @@ export default class ActorControlDialogForm extends React.Component {
             'Actions'
         ];
 
-        var data = this.props.movie.actors.map((actor) => {
+        var data = this.props.movie.actors !== undefined ? this.props.movie.actors.map((actor) => {
             return [ 
                 actor.firstName, 
                 actor.lastName,
@@ -121,7 +143,7 @@ export default class ActorControlDialogForm extends React.Component {
                     </span>
                 </div>
             ];
-        });
+        }) : [];
 
         return ( 
             <Dialog open={this.state.isOpen}
@@ -187,3 +209,15 @@ export default class ActorControlDialogForm extends React.Component {
         }
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators(actionCreators, dispatch);
+}
+
+const mapStateToProps = (store) => {
+    return {
+        movie: store.movie
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActorControlDialogForm);
