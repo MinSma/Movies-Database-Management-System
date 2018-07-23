@@ -11,8 +11,8 @@ using System;
 namespace movieapi.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20180722171602_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20180723122027_AddInitialDataSeeds")]
+    partial class AddInitialDataSeeds
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,13 +32,22 @@ namespace movieapi.Migrations
                     b.Property<string>("LastName")
                         .IsRequired();
 
-                    b.Property<int>("MovieId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
-
                     b.ToTable("Actors");
+                });
+
+            modelBuilder.Entity("movieapi.Data.Entities.ActorMovie", b =>
+                {
+                    b.Property<int>("MovieId");
+
+                    b.Property<int>("ActorId");
+
+                    b.HasKey("MovieId", "ActorId");
+
+                    b.HasIndex("ActorId");
+
+                    b.ToTable("ActorMovie");
                 });
 
             modelBuilder.Entity("movieapi.Data.Entities.Genre", b =>
@@ -73,10 +82,15 @@ namespace movieapi.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("movieapi.Data.Entities.Actor", b =>
+            modelBuilder.Entity("movieapi.Data.Entities.ActorMovie", b =>
                 {
+                    b.HasOne("movieapi.Data.Entities.Actor", "Actor")
+                        .WithMany("ActorMovies")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("movieapi.Data.Entities.Movie", "Movie")
-                        .WithMany("Actors")
+                        .WithMany("ActorMovies")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

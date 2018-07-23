@@ -5,10 +5,24 @@ using System.Collections.Generic;
 
 namespace movieapi.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class CreateInitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Actors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Actors", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Genres",
                 columns: table => new
@@ -44,20 +58,23 @@ namespace movieapi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Actors",
+                name: "ActorMovie",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false),
-                    MovieId = table.Column<int>(nullable: false)
+                    MovieId = table.Column<int>(nullable: false),
+                    ActorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Actors", x => x.Id);
+                    table.PrimaryKey("PK_ActorMovie", x => new { x.MovieId, x.ActorId });
                     table.ForeignKey(
-                        name: "FK_Actors_Movies_MovieId",
+                        name: "FK_ActorMovie_Actors_ActorId",
+                        column: x => x.ActorId,
+                        principalTable: "Actors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActorMovie_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
@@ -65,9 +82,9 @@ namespace movieapi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Actors_MovieId",
-                table: "Actors",
-                column: "MovieId");
+                name: "IX_ActorMovie_ActorId",
+                table: "ActorMovie",
+                column: "ActorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Movies_GenreId",
@@ -77,6 +94,9 @@ namespace movieapi.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ActorMovie");
+
             migrationBuilder.DropTable(
                 name: "Actors");
 

@@ -31,13 +31,22 @@ namespace movieapi.Migrations
                     b.Property<string>("LastName")
                         .IsRequired();
 
-                    b.Property<int>("MovieId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
-
                     b.ToTable("Actors");
+                });
+
+            modelBuilder.Entity("movieapi.Data.Entities.ActorMovie", b =>
+                {
+                    b.Property<int>("MovieId");
+
+                    b.Property<int>("ActorId");
+
+                    b.HasKey("MovieId", "ActorId");
+
+                    b.HasIndex("ActorId");
+
+                    b.ToTable("ActorMovie");
                 });
 
             modelBuilder.Entity("movieapi.Data.Entities.Genre", b =>
@@ -72,10 +81,15 @@ namespace movieapi.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("movieapi.Data.Entities.Actor", b =>
+            modelBuilder.Entity("movieapi.Data.Entities.ActorMovie", b =>
                 {
+                    b.HasOne("movieapi.Data.Entities.Actor", "Actor")
+                        .WithMany("ActorMovies")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("movieapi.Data.Entities.Movie", "Movie")
-                        .WithMany("Actors")
+                        .WithMany("ActorMovies")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
