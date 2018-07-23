@@ -180,27 +180,25 @@ class ActorControlDialogForm extends React.Component {
                         <Button variant="raised" color="primary"
                                 style={{
                                     width: "20%", 
-                                    height: "40px", 
+                                    height: "50px", 
                                     margin: "5% 2%",
                                     fontSize: "12px",
                                     float: "left",
                                     margin: "2%"
                                 }}
                                 onClick={this.handleAddExisting}>
-                                    <CloseIcon style={{fontSize: "12px"}}/>
                                     ADD EXISTING 
                         </Button>
                         <Button variant="raised" color="primary"
                                 style={{
                                     width: "20%", 
-                                    height: "40px", 
+                                    height: "50px", 
                                     margin: "5% 2%",
                                     fontSize: "12px",
                                     float: "left",
                                     margin: "2%"
                                 }}
                                 onClick={this.handleAddButtonClick}>
-                                    <CloseIcon style={{fontSize: "12px"}}/>
                                     ADD NEW 
                         </Button>
                         {this.renderDialog()}
