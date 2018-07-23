@@ -3,6 +3,7 @@ using movieapi.Data.Entities;
 using movieapi.DataContracts;
 using movieapi.DataContracts.Requests;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace movieapi.Data
@@ -38,17 +39,23 @@ namespace movieapi.Data
                 LastName = request.LastName
             };
 
-            if (request.MovieId.HasValue)
-            {
-                actor.MovieId = request.MovieId.Value;
-            }
-
             await _dbContext
                 .Actors
                 .AddAsync(actor);
 
             await _dbContext
                 .SaveChangesAsync();
+
+            if (request.MovieId.HasValue)
+            {
+                _dbContext
+                    .ActorMovies
+                    .Add(new ActorMovie
+                    {
+                        ActorId = actor.Id,
+                        MovieId = request.MovieId.Value
+                    });
+            }
 
             return actor;
         }
@@ -73,6 +80,13 @@ namespace movieapi.Data
             var actor = await _dbContext
                 .Actors
                 .SingleAsync(x => x.Id == id);
+
+            _dbContext
+                .RemoveRange(
+                    _dbContext
+                        .ActorMovies
+                        .Where(x => x.ActorId == id)
+                );
 
             _dbContext
                 .Remove(actor);
