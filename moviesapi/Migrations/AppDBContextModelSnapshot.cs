@@ -46,7 +46,7 @@ namespace movieapi.Migrations
 
                     b.HasIndex("ActorId");
 
-                    b.ToTable("ActorMovie");
+                    b.ToTable("ActorMovies");
                 });
 
             modelBuilder.Entity("movieapi.Data.Entities.Genre", b =>

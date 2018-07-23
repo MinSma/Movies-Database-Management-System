@@ -20,7 +20,7 @@ namespace movieapi.Data
 
         public async Task<List<MovieResponse>> GetAll(string text)
         {
-            if(text != null)
+            if (text != null)
             {
                 return await _dbContext
                 .Movies
@@ -35,9 +35,15 @@ namespace movieapi.Data
                     ReleaseDate = x.ReleaseDate,
                     GenreId = _dbContext.Genres.First(g => g.Id == x.GenreId).Id,
                     GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name,
-                    Actors = _dbContext.Actors.Where(a => a.MovieId == x.Id)
-                            .Select(a => new ActorResponse { Id = a.Id, FirstName = a.FirstName, LastName = a.LastName })
-                            .ToList()
+                    Actors = (from ma in _dbContext.ActorMovies
+                              from a in _dbContext.Actors
+                              where ma.ActorId == a.Id && ma.MovieId == x.Id
+                              select new ActorResponse
+                              {
+                                  Id = a.Id,
+                                  FirstName = a.FirstName,
+                                  LastName = a.LastName
+                              }).ToList()
                 })
                 .ToListAsync();
             }
@@ -51,9 +57,15 @@ namespace movieapi.Data
                     ReleaseDate = x.ReleaseDate,
                     GenreId = _dbContext.Genres.First(g => g.Id == x.GenreId).Id,
                     GenreName = _dbContext.Genres.First(g => g.Id == x.GenreId).Name,
-                    Actors = _dbContext.Actors.Where(a => a.MovieId == x.Id)
-                            .Select(a => new ActorResponse { Id = a.Id, FirstName = a.FirstName, LastName = a.LastName })
-                            .ToList()
+                    Actors = (from ma in _dbContext.ActorMovies
+                              from a in _dbContext.Actors
+                              where ma.ActorId == a.Id && ma.MovieId == x.Id
+                              select new ActorResponse
+                              {
+                                  Id = a.Id,
+                                  FirstName = a.FirstName,
+                                  LastName = a.LastName
+                              }).ToList()
                 })
                 .ToListAsync();
         }
@@ -71,9 +83,15 @@ namespace movieapi.Data
                 ReleaseDate = movie.ReleaseDate,
                 GenreId = _dbContext.Genres.First(g => g.Id == movie.GenreId).Id,
                 GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name,
-                Actors = _dbContext.Actors.Where(a => a.MovieId == movie.Id)
-                            .Select(a => new ActorResponse { Id = a.Id, FirstName = a.FirstName, LastName = a.LastName })
-                            .ToList()
+                Actors = (from ma in _dbContext.ActorMovies
+                          from a in _dbContext.Actors
+                          where ma.ActorId == a.Id && ma.MovieId == movie.Id
+                          select new ActorResponse
+                          {
+                              Id = a.Id,
+                              FirstName = a.FirstName,
+                              LastName = a.LastName
+                          }).ToList()
             };
         }
 
@@ -98,14 +116,19 @@ namespace movieapi.Data
 
                 foreach (var actor in request.Actors)
                 {
+                    var actorToCreate = new Actor
+                    {
+                        FirstName = actor.FirstName,
+                        LastName = actor.LastName
+                    };
+
                     await _dbContext
                         .Actors
-                        .AddAsync(new Actor
-                        {
-                            FirstName = actor.FirstName,
-                            LastName = actor.LastName,
-                            MovieId = movie.Id
-                        });
+                        .AddAsync(actorToCreate);
+
+                    await _dbContext
+                        .ActorMovies
+                        .AddAsync(new ActorMovie { ActorId = actorToCreate.Id, MovieId = movie.Id });
                 }
 
                 await _dbContext
@@ -116,17 +139,6 @@ namespace movieapi.Data
                 .Genres
                 .SingleOrDefaultAsync(x => x.Id == request.GenreId);
 
-            var actors = _dbContext
-                .Actors
-                .Where(a => a.MovieId == movie.Id)
-                .Select(a => new ActorResponse
-                {
-                    Id = a.Id,
-                    FirstName = a.FirstName,
-                    LastName = a.LastName
-                })
-                .ToList();
-
             return new MovieResponse
             {
                 Id = movie.Id,
@@ -134,7 +146,15 @@ namespace movieapi.Data
                 ReleaseDate = request.ReleaseDate,
                 GenreId = genre.Id,
                 GenreName = genre.Name,
-                Actors = actors
+                Actors = (from ma in _dbContext.ActorMovies
+                          from a in _dbContext.Actors
+                          where ma.ActorId == a.Id && ma.MovieId == movie.Id
+                          select new ActorResponse
+                          {
+                              Id = a.Id,
+                              FirstName = a.FirstName,
+                              LastName = a.LastName
+                          }).ToList()
             };
         }
 
@@ -158,9 +178,15 @@ namespace movieapi.Data
                 ReleaseDate = movie.ReleaseDate,
                 GenreId = _dbContext.Genres.First(g => g.Id == movie.GenreId).Id,
                 GenreName = _dbContext.Genres.First(g => g.Id == movie.GenreId).Name,
-                Actors = _dbContext.Actors.Where(a => a.MovieId == movie.Id)
-                            .Select(a => new ActorResponse { Id = a.Id, FirstName = a.FirstName, LastName = a.LastName })
-                            .ToList()
+                Actors = (from ma in _dbContext.ActorMovies
+                          from a in _dbContext.Actors
+                          where ma.ActorId == a.Id && ma.MovieId == movie.Id
+                          select new ActorResponse
+                          {
+                              Id = a.Id,
+                              FirstName = a.FirstName,
+                              LastName = a.LastName
+                          }).ToList()
             };
         }
 
@@ -169,6 +195,13 @@ namespace movieapi.Data
             var movie = await _dbContext
                 .Movies
                 .SingleAsync(x => x.Id == id);
+
+            _dbContext
+                .RemoveRange(
+                    _dbContext
+                        .ActorMovies
+                        .Where(x => x.MovieId == id)
+                );
 
             _dbContext
                 .Remove(movie);
