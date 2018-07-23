@@ -12,6 +12,7 @@ namespace movieapi.Data
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<ActorMovie> ActorMovies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,9 +24,20 @@ namespace movieapi.Data
                 .WithMany(g => g.Movies);
 
             modelBuilder
-                .Entity<Movie>()
-                .HasMany(m => m.Actors)
-                .WithOne(a => a.Movie);
+                .Entity<ActorMovie>()
+                .HasKey(r => new { r.MovieId, r.ActorId });
+
+            modelBuilder
+                .Entity<ActorMovie>()
+                .HasOne(r => r.Movie)
+                .WithMany(m => m.ActorMovies)
+                .HasForeignKey(r => r.MovieId);
+
+            modelBuilder
+                .Entity<ActorMovie>()
+                .HasOne(r => r.Actor)
+                .WithMany(a => a.ActorMovies)
+                .HasForeignKey(r => r.ActorId);
         }
     }
 }
