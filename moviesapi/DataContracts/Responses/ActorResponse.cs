@@ -1,7 +1,5 @@
-﻿using System;
+﻿using movieapi.Data.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace movieapi.DataContracts.Responses
 {
@@ -12,5 +10,7 @@ namespace movieapi.DataContracts.Responses
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public List<MovieResponse> Movies { get; set; }
     }
 }

@@ -3,6 +3,7 @@ const ADD_GENRE = 'ADD_GENRE';
 const EDIT_GENRE = 'EDIT_GENRE';
 const REMOVE_GENRE = 'REMOVE_GENRE';
 const GET_ALL_ACTORS = 'GET_ALL_ACTORS';
+const GET_ACTOR_BY_ID = 'GET_ACTOR_BY_ID';
 const ADD_ACTOR = 'ADD_ACTOR';
 const EDIT_ACTOR = 'EDIT_ACTOR';
 const REMOVE_ACTOR = 'REMOVE_ACTOR';
@@ -99,6 +100,22 @@ export const getAllActors = () => (dispatch) => {
             });
     }).catch((error) => console.log(error));
 };
+
+export const getActorById = (id) => (dispatch) => {
+    fetch(`${url}/api/actors/${id}`, {
+        method: 'GET',
+        headers,
+        credentials: 'include'
+    }).then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_ACTOR_BY_ID,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.log(error));
+}
 
 export const addActor = (values) => (dispatch) => {
     fetch(`${url}/api/actors`, {

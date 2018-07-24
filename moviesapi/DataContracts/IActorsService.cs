@@ -7,7 +7,7 @@ namespace movieapi.DataContracts
 {
     public interface IActorsService
     {
-        Task<List<ActorResponse>> GetAll();
+        List<ActorResponse> GetAll();
         Task<ActorResponse> GetById(int id);
         Task<ActorResponse> Create(ActorCreateUpdateRequest request);
         Task<ActorResponse> Update(int id, ActorCreateUpdateRequest request);

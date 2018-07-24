@@ -6,7 +6,8 @@ import actors from './actors';
 import genres from './genres';
 import movies from './movies';
 import movie from './movie';
+import actor from './actor';
 
-const rootReducer = combineReducers({ actors, genres, movies, movie, form, routing: routerReducer });
+const rootReducer = combineReducers({ actors, actor, genres, movies, movie, form, routing: routerReducer });
 
 export default rootReducer;
