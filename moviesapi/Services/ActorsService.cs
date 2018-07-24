@@ -15,9 +15,9 @@ namespace movieapi.Services
             _actorsRepository = actorsRepository;
         }
 
-        public async Task<List<ActorResponse>> GetAll()
+        public List<ActorResponse> GetAll()
         {
-            return await _actorsRepository.GetAll();
+            return _actorsRepository.GetAll();
         }
 
         public async Task<ActorResponse> GetById(int id)

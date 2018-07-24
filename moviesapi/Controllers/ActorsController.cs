@@ -20,9 +20,9 @@ namespace movieapi.Controllers
         }
 
         [HttpGet]
-        public async Task<List<ActorResponse>> GetAll()
+        public List<ActorResponse> GetAll()
         {
-            return await _actorsService.GetAll();
+            return _actorsService.GetAll();
         }
 
         [HttpGet("{id}", Name = "GetActor")]

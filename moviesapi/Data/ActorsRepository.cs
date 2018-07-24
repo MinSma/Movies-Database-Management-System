@@ -18,17 +18,30 @@ namespace movieapi.Data
             _dbContext = dBContext;
         }
 
-        public async Task<List<ActorResponse>> GetAll()
+        public List<ActorResponse> GetAll()
         {
-            return await _dbContext
+            var actors = _dbContext
                 .Actors
                 .Select(x => new ActorResponse
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
-                    LastName = x.LastName
+                    LastName = x.LastName,
+                    Movies = (from ma in _dbContext.ActorMovies
+                              from m in _dbContext.Movies
+                              where ma.ActorId == x.Id && ma.MovieId == m.Id
+                              select new MovieResponse
+                              {
+                                  Id = m.Id,
+                                  Title = m.Title,
+                                  ReleaseDate = m.ReleaseDate,
+                                  GenreId = m.GenreId,
+                                  Actors = null
+                              }).ToList()
                 })
-                .ToListAsync();
+                .ToList();
+
+            return actors;
         }
 
         public async Task<ActorResponse> GetById(int id)
@@ -41,7 +54,19 @@ namespace movieapi.Data
             {
                 Id = actor.Id,
                 FirstName = actor.FirstName,
-                LastName = actor.LastName
+                LastName = actor.LastName,
+                Movies = (from ma in _dbContext.ActorMovies
+                          from m in _dbContext.Movies
+                          where ma.ActorId == actor.Id && ma.MovieId == m.Id
+                          select new MovieResponse
+                          {
+                              Id = m.Id,
+                              Title = m.Title,
+                              ReleaseDate = m.ReleaseDate,
+                              GenreId = m.GenreId,
+                              GenreName = _dbContext.Genres.First(g => g.Id == m.GenreId).Name,
+                              Actors = null
+                          }).ToList()
             };
         }
 
@@ -78,7 +103,19 @@ namespace movieapi.Data
             {
                 Id = actor.Id,
                 FirstName = actor.FirstName,
-                LastName = actor.LastName
+                LastName = actor.LastName,
+                Movies = (from ma in _dbContext.ActorMovies
+                          from m in _dbContext.Movies
+                          where ma.ActorId == actor.Id && ma.MovieId == m.Id
+                          select new MovieResponse
+                          {
+                              Id = m.Id,
+                              Title = m.Title,
+                              ReleaseDate = m.ReleaseDate,
+                              GenreId = m.GenreId,
+                              GenreName = _dbContext.Genres.First(g => g.Id == m.GenreId).Name,
+                              Actors = null
+                          }).ToList()
             };
         }
 
@@ -98,7 +135,19 @@ namespace movieapi.Data
             {
                 Id = actor.Id,
                 FirstName = actor.FirstName,
-                LastName = actor.LastName
+                LastName = actor.LastName,
+                Movies = (from ma in _dbContext.ActorMovies
+                          from m in _dbContext.Movies
+                          where ma.ActorId == actor.Id && ma.MovieId == m.Id
+                          select new MovieResponse
+                          {
+                              Id = m.Id,
+                              Title = m.Title,
+                              ReleaseDate = m.ReleaseDate,
+                              GenreId = m.GenreId,
+                              GenreName = _dbContext.Genres.First(g => g.Id == m.GenreId).Name,
+                              Actors = null
+                          }).ToList()
             };
         }
 
