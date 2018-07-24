@@ -76,9 +76,9 @@ class ActorControlDialogForm extends React.Component {
         let func = this.props.getMovieById;
         let movieId = this.props.movieId;
 
-            setTimeout(function timeout() {
-                func(movieId);
-              }, 1000);
+        setTimeout(function timeout() {
+            func(movieId);
+        }, 1000);
     }
 
     handleDialogSubmit(values) {
@@ -92,7 +92,7 @@ class ActorControlDialogForm extends React.Component {
 
             setTimeout(function timeout() {
                 func(movieId);
-              }, 1000);
+            }, 1000);
 
             this.setState({
                 dialogIsOpen: false
@@ -133,11 +133,9 @@ class ActorControlDialogForm extends React.Component {
         let func = this.props.getMovieById;
         let movieId = this.props.movieId;
 
-            setTimeout(function timeout() {
-                func(movieId);
-              }, 1000);
-
-        this.props.getMovieById(this.props.movieId);
+        setTimeout(function timeout() {
+            func(movieId);
+        }, 1000);
 
         this.setState({
             addExistingDialogOn: false
