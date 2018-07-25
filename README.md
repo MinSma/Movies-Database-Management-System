@@ -1,4 +1,4 @@
-# MoviesAPI
+# Movies Database Management System
 
 # Usage guide:
 1.	Clone repository.
