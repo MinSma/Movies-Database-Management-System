@@ -20,7 +20,7 @@ namespace movieapi.Data
 
         public List<ActorResponse> GetAll()
         {
-            var actors = _dbContext
+            return _dbContext
                 .Actors
                 .Select(x => new ActorResponse
                 {
@@ -40,8 +40,6 @@ namespace movieapi.Data
                               }).ToList()
                 })
                 .ToList();
-
-            return actors;
         }
 
         public async Task<ActorResponse> GetById(int id)
@@ -169,47 +167,6 @@ namespace movieapi.Data
 
             await _dbContext
                 .SaveChangesAsync();
-        }
-
-        public async Task DeleteRelationship(CreateDeleteRelationshipRequest request)
-        {
-            _dbContext
-                .ActorMovies
-                .Remove(
-                    await _dbContext
-                    .ActorMovies
-                    .Where(x => x.ActorId == request.ActorId && x.MovieId == request.MovieId)
-                    .FirstAsync()
-                );
-
-            await _dbContext
-                .SaveChangesAsync();
-        }
-
-
-        public async Task<ActorResponse> CreateRelationship(CreateDeleteRelationshipRequest request)
-        {
-            await _dbContext
-                .ActorMovies
-                .AddAsync(new ActorMovie
-                {
-                    ActorId = request.ActorId,
-                    MovieId = request.MovieId
-                });
-
-            await _dbContext
-                .SaveChangesAsync();
-
-            var actor = await _dbContext
-                .Actors
-                .FirstAsync(x => x.Id == request.ActorId);
-
-            return new ActorResponse
-            {
-                Id = actor.Id,
-                FirstName = actor.FirstName,
-                LastName = actor.LastName
-            };
         }
     }
 }

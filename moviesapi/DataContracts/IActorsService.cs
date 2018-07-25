@@ -12,7 +12,5 @@ namespace movieapi.DataContracts
         Task<ActorResponse> Create(ActorCreateUpdateRequest request);
         Task<ActorResponse> Update(int id, ActorCreateUpdateRequest request);
         Task Delete(int id);
-        Task DeleteRelationship(CreateDeleteRelationshipRequest request);
-        Task<ActorResponse> CreateRelationship(CreateDeleteRelationshipRequest request);
     }
 }
