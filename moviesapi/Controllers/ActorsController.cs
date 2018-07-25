@@ -85,33 +85,5 @@ namespace movieapi.Controllers
                 return NotFound(new { message = "Actor with specified id is not found" });
             }
         }
-
-        [HttpDelete("relationship")]
-        public async Task<IActionResult> DeleteRelationship([FromBody] CreateDeleteRelationshipRequest request)
-        {
-            try
-            {
-                await _actorsService.DeleteRelationship(request);
-
-                return new NoContentResult();
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound(new { message = "Actor with specified id is not found" });
-            }
-        }
-
-        [HttpPost("relationship")]
-        public async Task<IActionResult> CreateRelationship([FromBody] CreateDeleteRelationshipRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var newlyAddedActor = await _actorsService.CreateRelationship(request);
-
-            return CreatedAtRoute("GetActor", new { id = newlyAddedActor }, newlyAddedActor);
-        }
     }
 }

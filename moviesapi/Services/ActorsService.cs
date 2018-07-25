@@ -39,15 +39,5 @@ namespace movieapi.Services
         {
             await _actorsRepository.Delete(id);
         }
-
-        public async Task DeleteRelationship(CreateDeleteRelationshipRequest request)
-        {
-            await _actorsRepository.DeleteRelationship(request);
-        }
-
-        public async Task<ActorResponse> CreateRelationship(CreateDeleteRelationshipRequest request)
-        {
-            return await _actorsRepository.CreateRelationship(request);
-        }
     }
 }

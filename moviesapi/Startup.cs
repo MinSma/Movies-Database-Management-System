@@ -28,6 +28,7 @@ namespace reactdotnet
             services.AddScoped<IActorsRepository, ActorsRepository>();
             services.AddScoped<IGenresRepository, GenresRepository>();
             services.AddScoped<IMoviesRepository, MoviesRepository>();
+            services.AddScoped<IRelationshipRepository, RelationshipRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

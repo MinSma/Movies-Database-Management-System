@@ -248,7 +248,7 @@ export const removeMovie = (id) => (dispatch) => {
 }
 
 export const removeRelationship = (values) => (dispatch) => {
-    fetch(`${url}/api/actors/relationship`, {
+    fetch(`${url}/api/relationships`, {
         method: 'DELETE',
         headers,
         body: JSON.stringify(values),
@@ -257,7 +257,7 @@ export const removeRelationship = (values) => (dispatch) => {
 }
 
 export const addRelationship = (values) => (dispatch) => {
-    fetch(`${url}/api/actors/relationship`, {
+    fetch(`${url}/api/relationships`, {
         method: 'POST',
         headers,
         body: JSON.stringify(values),
