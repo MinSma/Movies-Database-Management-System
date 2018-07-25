@@ -111,6 +111,7 @@ class MovieDialogForm extends React.Component {
                                 onChange={(event) => this.handleGenreSelection(event)}
                             />
                             {buttonText === 'ADD' && <FieldArray name="actors" component={renderActors} />}
+                            <div className="error-message">{this.props.error && <strong>{this.props.error}</strong>}</div>
                         </div>
                         <Button type="submit" variant="raised" color="primary"
                                 style={{
