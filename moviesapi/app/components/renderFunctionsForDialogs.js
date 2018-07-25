@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, Button } from '@material-ui/core';
 import { Field } from 'redux-form';
 
-export const renderActors = ({ fields, meta: { touched, error, submitFailed } }) => (
+export const renderActors = ({ fields }) => (
     <ul>
         {fields.map((actor, index) => (
             <li key={index}>
@@ -24,7 +24,6 @@ export const renderActors = ({ fields, meta: { touched, error, submitFailed } })
         ))}
         <li>
             <Button onClick={() => fields.push({})} variant="raised" color="primary" style={{margin: '1% 12% 1% 1%'}}>Add Actor</Button>
-            {(touched || submitFailed) && error && <span>{error}</span>}
         </li>
     </ul>
   );
